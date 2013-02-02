@@ -156,8 +156,7 @@ function u2obj(u)
     ">;(&(objectCategory=user)(sAMAccountName="+
     u.replace(/[()*\\]/g, '\\$&')+"));*;subTree";
  var Rs=$.AD.cmd.Execute();
- if(Rs.EOF) return;
- return GetObject(Rs(0).Value);
+ if(!Rs.EOF) return GetObject(Rs(0).Value);
 }
 
 // Подключиться ко всем БД
