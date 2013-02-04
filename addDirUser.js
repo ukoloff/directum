@@ -18,6 +18,8 @@ sysInit();
 userList();
 clickWait();
 
+gatherData();
+
 countDown();
 
 //--[Functions]
@@ -337,8 +339,6 @@ function iUser.prototype.dept()
  return S+'</Select>';
 }
 
-
-
 function userList()
 {
  changePage('select');
@@ -350,6 +350,22 @@ function userList()
 
  $.window.userList($.u);
 }
+
+// Забрать положения крыжиков из HTML
+function gatherData()
+{
+ if($.Dir.Photo) $.Dir.Photo=$.doc.getElementById('cbPhoto').checked;
+ $.Dir.genSQL=$.doc.getElementById('cbGen').checked;
+
+ for(var i in $.u)
+ {
+  var u=$.u[i];
+  u.Process=$.doc.getElementById('cb'+i).checked;
+  u.selectedDept=u.Depts.length<2?
+    0 : $.doc.getElementById('dept'+i).selectedIndex;
+ }
+}
+
 
 //--[Snippets]
 
