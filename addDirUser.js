@@ -10,15 +10,14 @@ var $={Dir:{			// Global variable
 //goW();
 $.doc=newDoc();
 startPage();
-
-while(!$.closed && !$.window.welcome) WScript.Sleep(300);
-
-if($.closed) WScript.Quit();
+clickWait();
 
 changePage('connect');
 $.window.startSpinner();
 sysInit();
 userList();
+clickWait();
+
 countDown();
 
 //--[Functions]
@@ -69,6 +68,13 @@ function startPage()
  $.window=$.doc.parentWindow;
  $.doc.body.onunload=function(){ $.closed=1; }
  $.interior=$.doc.getElementById('Interior');
+}
+
+function clickWait()
+{
+ $.window.Clicked=0;
+ while(!$.closed && !$.window.Clicked) WScript.Sleep(300);
+ if($.closed) WScript.Quit();
 }
 
 // ¬ыделить кусочек текста из исходного кода
@@ -444,10 +450,10 @@ TH	{
 
 <script>
 
-function Welcome(B)
+function Click(B)
 {
  B.disabled=true;
- window.welcome=1;
+ window.Clicked=1;
 }
 
 function startSpinner()
@@ -556,7 +562,6 @@ function cbToggle(cb)
  }
 }
 
-
 function clickAll(cb)
 {
  cb.blur();
@@ -600,7 +605,7 @@ onClick='this.blur()'>”ралхиммаш</A>", 2013
 <LI>√енерирует пользователей SQL
 </UL>
 <Div id='pg1Btn'>
-<Input Type='Button' Value=' нјчать! &gt;&gt; ' onClick='Welcome(this)' />
+<Input Type='Button' Value=' нјчать! &gt;&gt; ' onClick='Click(this)' />
 </Div>
 <HR />
 ѕользователей требуетс€ создать в самом Directum:
@@ -661,7 +666,7 @@ onClick='this.blur()'>”ралхиммаш</A>", 2013
 
 </TD><TD Align='Right' vAlign='Bottom'>
 <Input Type="Button" Value="—генерировать! &gt;&gt;" Disabled
-onClick="Run()" />
+onClick="Click(this)" />
 </TD></TR></Table>
 -------------------------------------------------------------------*/
 
