@@ -20,6 +20,8 @@ clickWait();
 
 gatherData();
 changePage('run');
+Process();
+
 countDown();
 
 //--[Functions]
@@ -366,6 +368,19 @@ function gatherData()
  }
 }
 
+function Process()
+{
+ var t=$.interior.getElementsByTagName('table')[0];
+
+ for(var i in $.u)
+ {
+  var u=$.u[i];
+  if(!u.Process) continue;
+  var r=t.insertRow();
+  r.insertCell().innerHTML=html(u.UserLogin);
+  for(var j=1; j<=5; j++) r.insertCell().innerHTML='<BR />';
+ }
+}
 
 //--[Snippets]
 
@@ -432,6 +447,7 @@ H1	{
 
 Table	{
  width: 100%;
+
 }
 
 THead, TFoot {
@@ -698,9 +714,6 @@ onClick="Click(this)" />
 </TR></THead>
 <TBody></TBody>
 </Table>
-
 -------------------------------------------------------------------*/
-
-
 
 //--[EOF]------------------------------------------------------------
