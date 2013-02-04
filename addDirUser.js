@@ -189,7 +189,7 @@ Order By 2
 -------------------------------------------------------------------*/
  $.SQL.CommandText=readSnippet('Depts.sql');
  $.SQL(0)=depId;
- return fetchRs();
+ return sqlFetch();
 }
 
 // Подключиться ко всем БД
@@ -266,7 +266,17 @@ Where
   {
    var u=$.u[i];
    u.AD=u2obj(u.UserLogin);
-   WScript.Echo(u.UserKod, u.UserName, u.AD? u.AD.displayName:'-');
+  }
+ });
+
+ doIt('Поиск подразделений', function()
+ {
+  for(var i in $.u)
+  {
+   var u=$.u[i];
+   u.Dept=depID(u.AD);
+   u.Depts=u.Dept? findDepts(u.Dept) : [];
+   WScript.Echo(u.UserKod, u.UserName, u.AD? u.AD.displayName:'-', u.Dept, u.Depts.length);
   }
  });
 
