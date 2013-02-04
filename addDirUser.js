@@ -309,7 +309,8 @@ function iUser.prototype.cn()
  var S=html(z.cn);
  if(z.userAccountControl&2) S=S.strike();
  return '<A hRef="http://net.ekb.ru/omz/dc/user/?u='+
-    escape(z.sAMAccountName)+'" Target="_blank">'+S+'</A>';
+    escape(z.sAMAccountName)+
+    '" Target="_blank" onClick="return WWW(this)">'+S+'</A>';
 }
 
 function iUser.prototype.tabNo()
@@ -351,6 +352,13 @@ function userList()
  z.checked=1;
 
  $.window.userList($.u);
+
+ $.window.WWW=function(A)
+ { 
+  A.blur();
+  (new ActiveXObject("WScript.Shell")).run(A.href);
+  return false;
+ }
 }
 
 // Забрать положения крыжиков из HTML
@@ -362,7 +370,7 @@ function gatherData()
  for(var i in $.u)
  {
   var u=$.u[i];
-  u.Process=$.doc.getElementById('cb'+i).checked;
+  u.Process=u.Depts.length && $.doc.getElementById('cb'+i).checked;
   u.selectedDept=u.Depts.length<2?
     0 : $.doc.getElementById('dept'+i).selectedIndex;
  }
@@ -621,7 +629,7 @@ setTimeout(function()
 onClick='this.blur()'>Уралхиммаш</A>", 2013
 </Div>
 <Div id='D'><A hRef='#'>Отменить</A> закрытие окна через
-<Span>10</Span>
+<Span>30</Span>
 с
 </Div>
 </Div>
