@@ -362,7 +362,7 @@ function gatherData()
  for(var i in $.u)
  {
   var u=$.u[i];
-  u.Process=$.doc.getElementById('cb'+i).checked;
+  u.Process=u.Depts.length && $.doc.getElementById('cb'+i).checked;
   u.selectedDept=u.Depts.length<2?
     0 : $.doc.getElementById('dept'+i).selectedIndex;
  }
@@ -621,7 +621,7 @@ setTimeout(function()
 onClick='this.blur()'>Уралхиммаш</A>", 2013
 </Div>
 <Div id='D'><A hRef='#'>Отменить</A> закрытие окна через
-<Span>10</Span>
+<Span>30</Span>
 с
 </Div>
 </Div>
