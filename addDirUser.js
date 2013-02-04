@@ -161,6 +161,37 @@ function u2obj(u)
  if(!Rs.EOF) return GetObject(Rs(0).Value);
 }
 
+// Найти код подразделения пользователя AD
+function depID(user)
+{
+ if(!user) return;
+ while(user=GetObject(user.Parent))
+ {
+  if(!user.ou) return;
+  var i=user.l;
+  if(!i) continue;
+  if(!i.match(/^\d+$/)) return;
+  return i;
+ }
+}
+
+// Найти все подразделения с указанным кодом
+function findDepts(depId)
+{
+/*--[Depts.sql]------------------------------------------------------
+Select
+ Dep.Kod, Dep.NameAn
+From
+ MBVidAn As Z, MBAnalit As Dep
+Where
+ Z.Kod='ПОД' And Z.Vid=Dep.Vid And Dep.NomPodr=? 
+Order By 2
+-------------------------------------------------------------------*/
+ $.SQL.CommandText=readSnippet('Depts.sql');
+ $.SQL(0)=depId;
+ return fetchRs();
+}
+
 // Подключиться ко всем БД
 function sysInit()
 {
