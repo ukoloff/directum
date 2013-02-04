@@ -138,15 +138,17 @@ function changePage(N)
  $.interior.innerHTML=readSnippet(N);
 }
 
-function sqlFetch(Rs, Fun)
+function sqlFetch()
 {
- for(var N=0; !Rs.EOF; Rs.MoveNext(), N++)
+ var X=[];
+ for(var Rs=$.SQL.Execute(); !Rs.EOF; Rs.MoveNext())
  {
   var r={};
   for(var E=new Enumerator(Rs.Fields); !E.atEnd(); E.moveNext())
    r[E.item().name]=E.item().value;
-  if(false===Fun(r, N)) break;
+  X.push(r);
  }
+ return X;
 }
 
 // Найти пользователя по имени в AD и вернуть все его данные
@@ -162,7 +164,7 @@ function u2obj(u)
 // Подключиться ко всем БД
 function sysInit()
 {
- var lp;
+ var lp, SQL;
  doIt('Инициализация клиента Directum', function()
  { lp=new ActiveXObject("SBLogon.LoginPoint"); });
 
@@ -180,14 +182,16 @@ function sysInit()
 
  doIt('Подключение к серверу MS SQL', function()
  {
-  $.SQL=new ActiveXObject("ADODB.Connection");
-  $.SQL.Provider='SQLOLEDB';
-  $.SQL.Open("Integrated Security=SSPI;Data Source="+$.Dir.Server);
+  SQL=new ActiveXObject("ADODB.Connection");
+  SQL.Provider='SQLOLEDB';
+  SQL.Open("Integrated Security=SSPI;Data Source="+$.Dir.Server);
+  $.SQL=new ActiveXObject("ADODB.Command");
+  $.SQL.ActiveConnection=SQL;
  });
 
  doIt('Выбор базы данных MS SQL', function()
  {
-  $.SQL.DefaultDatabase='['+$.Dir.DB+']';
+  SQL.DefaultDatabase='['+$.Dir.DB+']';
  });
 
  doIt('Подключение к Active Directory', function()
@@ -221,11 +225,8 @@ Where
      Polzovatel is not Null
      And Vid=(Select Vid from MBVidAn Where Kod='РАБ'))
 -------------------------------------------------------------------*/
-  $.u=[];
-  sqlFetch($.SQL.Execute(readSnippet('user.sql')), function(r)
-  {
-   $.u.push(r);
-  });
+  $.SQL.CommandText=readSnippet('user.sql');
+  $.u=sqlFetch();
  });
 
  doIt('Поиск пользователей в AD', function()
