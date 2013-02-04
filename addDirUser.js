@@ -408,11 +408,24 @@ H1	{
  text-align:	right;
 }
 
+Table	{
+ width: 100%;
+}
+
 THead, TFoot {
  background:	white;
 }
+
 TH	{
  text-align: center;
+}
+
+.Even	{
+ background: #CCCCEE;
+}
+
+.Odd	{
+ background: #AAAACC;
 }
 
 #Spinner {
@@ -506,6 +519,8 @@ function userList(List)
  {
   var u=List[i];
   var r=t.insertRow(), c;
+  r.className=i&1? 'Odd' : 'Even';
+
   (c=r.insertCell()).innerHTML=u.login();
   c.noWrap=1;
   (c=r.insertCell()).innerHTML=u.cn();
