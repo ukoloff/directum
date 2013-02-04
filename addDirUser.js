@@ -288,8 +288,8 @@ function iUser.prototype.login()
 {
  var Disabled=this.Depts.length?'': 'Disabled ';
  return '<Input Type="CheckBox" id="cb'+
-    this.i+'" '+Disabled+'/>\n<Label For="cb'+this.i
-    +'">'+html(this.UserLogin)+'</Label>';
+    this.i+'" '+Disabled+' onClick="cbToggle(this)" />\n<Label For="cb'+
+    this.i+'">'+html(this.UserLogin)+'</Label>';
 }
 
 function iUser.prototype.cn()
@@ -299,7 +299,7 @@ function iUser.prototype.cn()
  var S=html(z.cn);
  if(z.userAccountControl&2) S=S.strike();
  return '<A hRef="http://net.ekb.ru/omz/dc/user/?u='+
-    escape(this.sAMAccountName)+'" Target="_blank">'+S+'</A>';
+    escape(z.sAMAccountName)+'" Target="_blank">'+S+'</A>';
 }
 
 function iUser.prototype.tabNo()
@@ -515,6 +515,7 @@ function userList(List)
 {
  var t=document.getElementById('interior').
     getElementsByTagName('table')[0].tBodies[0];
+ var N=0;
  for(var i in List)
  {
   var u=List[i];
@@ -536,9 +537,37 @@ function userList(List)
   (c=r.insertCell()).innerHTML=u.deptNo();
   c.align='right';
   r.insertCell().innerHTML=u.dept();
+  if(u.Depts.length)N++;
+ }
+ document.getElementById('numUsers').innerHTML=
+    N==List.length?N:N+'/'+List.length;
+}
+
+function cbToggle(cb)
+{
+ if(cb) cb.blur();
+ var X=document.getElementsByTagName('input');
+ n=0;
+ for(var i in X)
+ {
+  var z=X[i];
+  if(/^cb\d+$/.test(z.id) && !z.disabled && z.checked) n++;
+  if('button'==z.type) z.disabled=!n;
  }
 }
 
+
+function clickAll(cb)
+{
+ cb.blur();
+ var X=document.getElementsByTagName('input');
+ for(var i in X)
+ {
+  var z=X[i];
+  if(/^cb\d+$/.test(z.id) && !z.disabled) z.checked=cb.checked;
+ }
+ cbToggle();
+}
 
 // ‘окус на кнопку "нјчать"
 setTimeout(function()
@@ -631,7 +660,8 @@ onClick='this.blur()'>”ралхиммаш</A>", 2013
 <Label For="cbPhoto"> опировать фотографии</Label>
 
 </TD><TD Align='Right' vAlign='Bottom'>
-<Input Type="Button" Value="—генерировать! &gt;&gt;" onClick="Run()" />
+<Input Type="Button" Value="—генерировать! &gt;&gt;" Disabled
+onClick="Run()" />
 </TD></TR></Table>
 -------------------------------------------------------------------*/
 
