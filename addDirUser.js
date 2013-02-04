@@ -18,6 +18,7 @@ if($.closed) WScript.Quit();
 changePage('connect');
 $.window.startSpinner();
 sysInit();
+userList();
 countDown();
 
 //--[Functions]
@@ -138,12 +139,12 @@ function changePage(N)
  $.interior.innerHTML=readSnippet(N);
 }
 
-function sqlFetch()
+function sqlFetch(Class)
 {
  var X=[];
  for(var Rs=$.SQL.Execute(); !Rs.EOF; Rs.MoveNext())
  {
-  var r={};
+  var r=Class? new Class : {};
   for(var E=new Enumerator(Rs.Fields); !E.atEnd(); E.moveNext())
    r[E.item().name]=E.item().value;
   X.push(r);
@@ -257,7 +258,7 @@ Where
      And Vid=(Select Vid from MBVidAn Where Kod='РАБ'))
 -------------------------------------------------------------------*/
   $.SQL.CommandText=readSnippet('user.sql');
-  $.u=sqlFetch();
+  $.u=sqlFetch(iUser);
  });
 
  doIt('Поиск пользователей в AD', function()
@@ -265,6 +266,7 @@ Where
   for(var i in $.u)
   {
    var u=$.u[i];
+   u.i=i;
    u.AD=u2obj(u.UserLogin);
   }
  });
@@ -276,10 +278,71 @@ Where
    var u=$.u[i];
    u.Dept=depID(u.AD);
    u.Depts=u.Dept? findDepts(u.Dept) : [];
-   WScript.Echo(u.UserKod, u.UserName, u.AD? u.AD.displayName:'-', u.Dept, u.Depts.length);
   }
  });
+}
 
+function iUser(){}
+
+function iUser.prototype.login()
+{
+ var Disabled=this.Depts.length?'': 'Disabled ';
+ return '<Input Type="CheckBox" id="cb'+
+    this.i+'" '+Disabled+'/>\n<Label For="cb'+this.i
+    +'">'+html(this.UserLogin)+'</Label>';
+}
+
+function iUser.prototype.cn()
+{
+ var z=this.AD;
+ if(!z) return '-';
+ var S=html(z.cn);
+ if(z.userAccountControl&2) S=S.strike();
+ return '<A hRef="http://net.ekb.ru/omz/dc/user/?u='+
+    escape(this.sAMAccountName)+'" Target="_blank">'+S+'</A>';
+}
+
+function iUser.prototype.tabNo()
+{
+ var n=this.AD.employeeId;
+ return n? html(n) : '-';
+}
+
+function iUser.prototype.title()
+{
+ var t=this.AD.title;
+ return t? html(t) : '?';
+}
+
+function iUser.prototype.deptNo()
+{
+ var d=this.Dept;
+ return d? html(d) : '-';
+}
+
+function iUser.prototype.dept()
+{
+ var d=this.Depts;
+ if(d.length<1) return '-';
+ if(1==d.length) return html(d[0].NameAn);
+ var S='<Select id="dept'+this.i+'">';
+ for(var i in d)
+  S+='<Option Value="'+d[i].Kod+'">'+html(d[i].NameAn);
+ return S+'</Select>';
+}
+
+
+
+function userList()
+{
+ changePage('select');
+
+ if(!$.Dir.Photo) return;
+ var z=$.doc.getElementById('cbPhoto');
+ z.disabled=0;
+ z.checked=1;
+
+ $.window.userList($.u);
 }
 
 //--[Snippets]
@@ -347,6 +410,9 @@ H1	{
 
 THead, TFoot {
  background:	white;
+}
+TH	{
+ text-align: center;
 }
 
 #Spinner {
@@ -432,6 +498,33 @@ function newStep()
  return {ctime: new Date()};
 }
 
+function userList(List)
+{
+ var t=document.getElementById('interior').
+    getElementsByTagName('table')[0].tBodies[0];
+ for(var i in List)
+ {
+  var u=List[i];
+  var r=t.insertRow(), c;
+  (c=r.insertCell()).innerHTML=u.login();
+  c.noWrap=1;
+  (c=r.insertCell()).innerHTML=u.cn();
+  if(!u.AD)
+  {
+   c.align='center';
+   c.colSpan=5;
+   continue;
+  }
+  (c=r.insertCell()).innerHTML=u.tabNo();
+  c.align='right';
+  r.insertCell().innerHTML=u.title();
+  (c=r.insertCell()).innerHTML=u.deptNo();
+  c.align='right';
+  r.insertCell().innerHTML=u.dept();
+ }
+}
+
+
 // Фокус на кнопку "нАчать"
 setTimeout(function()
 {
@@ -495,6 +588,36 @@ onClick='this.blur()'>Уралхиммаш</A>", 2013
 
 <Div id='Spinner'></Div>
 </Div>
+-------------------------------------------------------------------*/
+
+/*--[select]---------------------------------------------------------
+<Table Border CellSpacing='0'>
+<THead><TR>
+<TH>Логин</TH>
+<TH>AD</TH>
+<TH>Таб. №</TH>
+<TH>Должность</TH>
+<TH>Код</TH>
+<TH>Отдел</TH>
+</TR></THead>
+<TBody></TBody>
+<TFoot><TR>
+<TD ColSpan='6'>
+<Input Type="CheckBox" id="cb*" onClick="clickAll(this)"/>
+<Label For="cb*">Для всех [<Span id='numUsers'></Span>]</Label>
+</TR></TFoot>
+</Table>
+
+<Table><TR><TD>
+<Input Type="CheckBox" id="cbGen" Checked />
+<Label For="cbGen">Генерировать SQL-пользователей</Label>
+<BR />
+<Input Type="CheckBox" id="cbPhoto" Disabled />
+<Label For="cbPhoto">Копировать фотографии</Label>
+
+</TD><TD Align='Right' vAlign='Bottom'>
+<Input Type="Button" Value="Сгенерировать! &gt;&gt;" onClick="Run()" />
+</TD></TR></Table>
 -------------------------------------------------------------------*/
 
 //--[EOF]------------------------------------------------------------
