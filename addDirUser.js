@@ -513,7 +513,7 @@ function newStep()
 
 function userList(List)
 {
- var t=document.getElementById('interior').
+ var t=document.getElementById('Interior').
     getElementsByTagName('table')[0].tBodies[0];
  var N=0;
  for(var i in List)
