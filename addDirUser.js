@@ -2,9 +2,9 @@
 //
 //
 
-var $={Dir:{			// Global variable
-    Server: 'Dir9',		// Directum server
-    DB: 	'Directum'	// Directum database
+var $={Dir:{	// Global variable
+ Server:'Dir9',		// Directum server
+ DB:	'Directum'	// Directum database
 }};
 
 //goW();
@@ -238,7 +238,7 @@ function sysInit()
 
  doIt('Подключение к Active Directory', function()
  {
-  $.AD={};
+  $.AD={Domain: (new ActiveXObject("ADSystemInfo")).DomainShortName};
   $.AD.rootDSE=GetObject("LDAP://rootDSE");
   $.AD.baseDN=$.AD.rootDSE.Get('rootDomainNamingContext');
 
