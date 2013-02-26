@@ -1,5 +1,5 @@
 //
-//
+// Generate Worker, Person etc. for Directum
 //
 
 var $={Dir:{	// Global variable
@@ -398,6 +398,23 @@ function Process()
   var r=t.insertRow();
   r.insertCell().innerHTML=html(u.UserLogin);
   for(var j=1; j<=5; j++) r.insertCell().innerHTML='<BR />';
+  var aCol=1;
+  doIt(function(){ u.addSQL(); });
+ }
+
+ function doIt(f)
+ {
+  var C=r.cells[aCol++]
+  C.align='center';
+  C.innerHTML='...';
+  try{ 
+   f(); 
+   C.innerHTML='+';
+  }
+  catch(e){ 
+   C.innerHTML='-';
+   C.title=e.description;
+  };
  }
 }
 
