@@ -341,6 +341,25 @@ function iUser.prototype.dept()
  return S+'</Select>';
 }
 
+function iUser.prototype.addSQL()
+{
+ var X=$.AD.Domain+'\\'+this.UserLogin;
+ $.SQL.ActiveConnection.sp_grantlogin(X);
+
+ $.SQL.CommandText=readSnippet('syslogin.sql');
+/*--[syslogin.sql]---------------------------------------------------
+Select Count(*)
+From sys.sysusers U Inner Join sys.syslogins L
+ On U.sid=L.sid
+ Where U.name=? And L.name=?
+-------------------------------------------------------------------*/
+ $.SQL(0)=this.UserLogin;
+ $.SQL(1)=X;
+ if($.SQL.Execute()(0)) return;
+
+ $.SQL.ActiveConnection.sp_adduser(X, u);
+}
+
 function userList()
 {
  changePage('select');
