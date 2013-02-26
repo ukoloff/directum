@@ -452,7 +452,7 @@ function Process()
   r.insertCell().innerHTML=html(u.UserLogin);
   for(var j=1; j<=5; j++) r.insertCell().innerHTML='<BR />';
   var aCol=1;
-  doIt(function(){ u.addSQL(); });
+  doIt(function(){ if($.Dir.genSQL) u.addSQL(); });
   doIt(function(){ u.fixPOL(); });
   doIt(function(){ u.addPRS(); });
   doIt(function(){ u.addWRK(); });
