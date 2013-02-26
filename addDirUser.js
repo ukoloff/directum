@@ -385,6 +385,22 @@ function iUser.prototype.addPRS()
  this.PrsKod=Prs.Код;
 }
 
+function iUser.prototype.addWRK()
+{
+ var Wrk=$.Dir.App.ReferencesFactory.РАБ.GetComponent();
+ Wrk.Open();
+ Wrk.Insert();
+ Wrk.Персона=this.PrsKod;
+ Wrk.Пользователь=this.Kod;
+ Wrk.Подразделение=this.Depts[this.selectedDept].Kod;
+ Wrk.Строка=this.AD.title;			//Должность
+ Wrk.Дополнение4=this.AD.telephoneNumber;
+ Wrk.Дополнение3=this.AD.employeeID	//Табельный номер
+ Wrk.Дополнение=this.AD.sn+' '+
+    this.AD.givenName+' '+this.AD.middleName; //Фамилия И.О.
+ Wrk.Save();
+}
+
 function userList()
 {
  changePage('select');
@@ -427,6 +443,7 @@ function Process()
   doIt(function(){ u.addSQL(); });
   doIt(function(){ u.fixPOL(); });
   doIt(function(){ u.addPRS(); });
+  doIt(function(){ u.addWRK(); });
  }
 
  function doIt(f)
