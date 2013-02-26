@@ -360,6 +360,17 @@ From sys.sysusers U Inner Join sys.syslogins L
  $.SQL.ActiveConnection.sp_adduser(X, u);
 }
 
+function iUser.prototype.fixPOL()
+{
+ $.SQL.CommandText="Update MBUser Set UserName=? Where UserLogin=?";
+ $.SQL(0)=this.AD.cn;
+ $.SQL(1)=this.UserLogin;
+ $.SQL.Execute();
+ var POL=$.Dir.App.ReferencesFactory.ПОЛ.GetObjectByCode(this.Kod);
+ POL.Дополнение3=this.AD.cn;
+ POL.Save();
+}
+
 function userList()
 {
  changePage('select');
@@ -400,6 +411,7 @@ function Process()
   for(var j=1; j<=5; j++) r.insertCell().innerHTML='<BR />';
   var aCol=1;
   doIt(function(){ u.addSQL(); });
+  doIt(function(){ u.fixPOL(); });
  }
 
  function doIt(f)
