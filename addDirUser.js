@@ -401,6 +401,18 @@ function iUser.prototype.addWRK()
  Wrk.Save();
 }
 
+function iUser.prototype.fixKnt()
+{
+ var Knt=$.Dir.App.ReferencesFactory.КНТ.GetComponent();
+ Knt.Open(); 
+ Knt.OpenRecord();	// Без этого запись не работает (???!)
+ if(!Knt.Locate('Персона', this.PrsKod))
+   throw {description: 'Контакт не найден'};
+// Раньше это работало, но кажется в версии 4.5 удмурты это испортили :-(
+ Knt.Строка2=this.AD.mail;		//Личный e-mail
+ Knt.Save();
+}
+
 function userList()
 {
  changePage('select');
@@ -444,6 +456,7 @@ function Process()
   doIt(function(){ u.fixPOL(); });
   doIt(function(){ u.addPRS(); });
   doIt(function(){ u.addWRK(); });
+  doIt(function(){ u.fixKnt(); });
  }
 
  function doIt(f)
