@@ -366,9 +366,23 @@ function iUser.prototype.fixPOL()
  $.SQL(0)=this.AD.cn;
  $.SQL(1)=this.UserLogin;
  $.SQL.Execute();
+
  var POL=$.Dir.App.ReferencesFactory.ПОЛ.GetObjectByCode(this.Kod);
  POL.Дополнение3=this.AD.cn;
  POL.Save();
+}
+
+function iUser.prototype.addPRS()
+{
+ var Prs=$.Dir.App.ReferencesFactory.ПРС.GetComponent();
+ Prs.Open();
+ Prs.Insert();
+ Prs.Дополнение=this.AD.sn;		//Фамилия
+ Prs.Дополнение2=this.AD.givenName;	//Имя
+ Prs.Дополнение3=this.AD.middleName;	//Отчество
+ Prs.Строка2=this.AD.mail;		//Личный e-mail
+ Prs.Save();
+ this.PrsKod=Prs.Код;
 }
 
 function userList()
@@ -412,6 +426,7 @@ function Process()
   var aCol=1;
   doIt(function(){ u.addSQL(); });
   doIt(function(){ u.fixPOL(); });
+  doIt(function(){ u.addPRS(); });
  }
 
  function doIt(f)
