@@ -381,8 +381,12 @@ function iUser.prototype.addPRS()
  Prs.Дополнение2=this.AD.givenName;	//Имя
  Prs.Дополнение3=this.AD.middleName;	//Отчество
  Prs.Строка2=this.AD.mail;		//Личный e-mail
+ var Photo=this.getPhoto();
+ if(Photo)
+   Prs.Requisites('Текст').LoadFromFile(Photo);
  Prs.Save();
  this.PrsKod=Prs.Код;
+ this.freePhoto();
 }
 
 function iUser.prototype.addWRK()
@@ -412,6 +416,56 @@ function iUser.prototype.fixKnt()
  Knt.Строка2=this.AD.mail;		//Личный e-mail
  Knt.Save();
 }
+
+function iUser.prototype.getPhoto()
+{
+ if(!$.Dir.Photo) return;
+ var J=this.AD.thumbnailPhoto;
+ if(typeof(J)==typeof({}.x)) J=this.AD.jpegPhoto;
+ if(typeof(J)==typeof({}.x)) return;
+
+ if(!$.os) $.os=objOS();
+ this.photoPath=$.os.tmp();
+
+ var Stream=WScript.CreateObject("adodb.stream");
+ Stream.Type=1;	//adTypeBinary
+ Stream.Open();
+ Stream.Write(J);
+ Stream.SaveToFile(this.photoPath, 2);	//adSaveCreateOverWrite
+ Stream.Close();
+
+ return this.photoPath;
+}
+
+function iUser.prototype.freePhoto()
+{
+ if(this.photoPath) $.os.fso.DeleteFile(this.photoPath);
+}
+
+function rnd(N)
+{
+ for(var S=''; S.length<(N||12); )
+ {
+  var n=Math.floor(62*Math.random());
+  S+=String.fromCharCode('Aa0'.charCodeAt(n/26)+n%26);
+ }
+ return S;
+}
+
+function objOS()
+{
+ var os={};
+ os.fso=new ActiveXObject("Scripting.FileSystemObject");
+ os.sh=new ActiveXObject("WScript.Shell");
+ os.tmpPath=os.sh.ExpandEnvironmentStrings('%TEMP%/');
+ os.tmp=function()
+ {
+  do var n=this.tmpPath+rnd(); while(this.fso.FileExists(n));
+  return n;
+ };
+ return os;
+}
+
 
 function userList()
 {
