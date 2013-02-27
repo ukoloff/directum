@@ -471,12 +471,12 @@ function userList()
 {
  changePage('select');
 
+ $.window.userList($.u);
+
  if(!$.Dir.Photo) return;
  var z=$.doc.getElementById('cbPhoto');
  z.disabled=0;
  z.checked=1;
-
- $.window.userList($.u);
 }
 
 // Забрать положения крыжиков из HTML
