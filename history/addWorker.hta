@@ -1,0 +1,542 @@
+<html><head>
+<title>Автоматическая генерация персон, работников и контактов</title>
+<HTA:APPLICATION
+    ID="htaDirWorkers"
+    ApplicationName="DirectumWorkers"
+    Server='Directum'
+    DB='Directum'
+    Generate='1'
+/>
+<Style>
+body {
+    background: #A0C0E0;
+    color:black;
+    font-family: Verdana, Arial, sans-serif;
+    padding: 0;
+    text-align: justify;
+}
+
+H1 {
+    text-align: right;
+    margin: 1ex;
+}
+
+Table {
+    width: 100%;
+}
+
+Div#Query {
+    display: none;
+}
+
+Div#Result {
+    display: none;
+}
+
+Div#Error {
+    font: 112%;
+    color: red;
+    text-align: center;
+}
+
+Div#Copyright {
+    margin-top: 1ex;
+    font: 62%;
+}
+
+TR.Head {
+    background: #FFFFFF;
+}
+
+TR.Even {
+    background: #AAAAAA;
+}
+
+TR.Odd {
+    background: #CCCCCC;
+}
+
+Table#Users A {
+    text-decoration: none;
+}
+</Style>
+<Script><!--
+var G={h:{}};	// Все настройки программы складываются сюда
+
+setTimeout(putSplash, 1);
+
+// Инициализация настроек
+function initG()
+{
+// var X=document.getElementById("htaDirWorkers");
+ var X=document.getElementsByTagName('APPLICATION')[0];
+ G.Server=X.Server;
+ G.DB=X.DB;
+ G.Gen=X.Generate;
+}
+
+// Переделать спецсимволы в HTML-коды
+function html(S)
+{
+ S=''+S;
+ var E={'&':'amp', '>':'gt', '<':'lt', '"':'quot'};
+ for(var Z in E)
+   S=S.split(Z).join('&'+E[Z]+';');
+ return S;
+}
+
+// При клике на ссылку открыть её в обычном браузере (не HTA)
+function WWW(a)
+{
+ a.blur();
+ var x=new ActiveXObject("WScript.Shell");
+ x.run(a.href);
+ return false;
+}
+
+// Найти пользователя по имени в AD и вернуть все его данные
+function userAD(u)
+{
+ G.h.AD.CommandText=
+     "SELECT * FROM 'LDAP://"+G.h.Root+"' WHERE objectCategory='user' "+
+     "And sAMAccountName='"+u.replace("'", "|")+"'";
+ var Rs=G.h.AD.Execute();
+ if(Rs.EOF) return;
+ return GetObject(Rs.Fields(0).Value);
+}
+
+// Найти код подразделения пользователя AD
+function depID(user)
+{
+ if(!user) return;
+ while(user=GetObject(user.Parent))
+ {
+  if(!user.ou) return;
+  var i=user.l;
+  if(!i) continue;
+  if(!i.match(/^\d+$/)) return;
+  return i;
+ }
+}
+
+// Достать все данные из Recordset и сложить в массив хешей
+function fetchRs(Rs)
+{
+ var Res=[];
+ while(!Rs.EOF)
+ {
+  var D={};
+  for(var E=new Enumerator(Rs.Fields); !E.atEnd(); E.moveNext())
+  {
+   var F=E.item();
+   D[F.name]=F.value;
+  }
+  Res.push(D);
+  Rs.MoveNext();
+ }
+ return Res;
+}
+
+// Найти все подразделения с указанным кодом
+function findDepts(depId)
+{
+ var Res=[];
+ G.h.SQL.CommandText="Select Dep.Kod, Dep.NameAn From MBVidAn As Z, MBAnalit As Dep "+
+    "Where Z.Kod='ПОД' And Z.Vid=Dep.Vid And Dep.NomPodr=? Order By 2";
+ G.h.SQL(0)=depId;
+ return fetchRs(G.h.SQL.Execute());
+}
+
+// Подключение к AD
+function initAD()
+{
+ var e;
+ try{
+  var Root=GetObject("LDAP://rootDSE");
+  G.h.Root=Root.Get('rootDomainNamingContext');
+
+  var Conn=new ActiveXObject("ADODB.Connection");
+  var Cmd=new ActiveXObject("ADODB.Command");
+  Conn.Provider = "ADsDSOObject";
+  Conn.Open("Active Directory Provider");
+  Cmd.ActiveConnection=Conn;
+
+  Cmd.Properties("Page Size")=1000;
+  Cmd.Properties("Searchscope")=2; // ADS_SCOPE_SUBTREE
+  G.h.AD=Cmd;
+ }catch(e){G.Error=e.description;}
+}
+
+// Подключение к SQL-серверу
+function initSQL()
+{
+ var e, Conn=new ActiveXObject("ADODB.Connection");
+ try{
+  Conn.Provider='SQLOLEDB';
+  Conn.Open("Integrated Security=SSPI;Data Source='"+G.Server+"'");
+ }catch(e)
+ {
+  G.Error=e.description;
+  return;
+ }
+ try{
+  Conn.DefaultDatabase=G.DB; 
+  G.h.SQL=Conn;
+ }
+ catch(e)
+ {
+  G.Error='Не удаётся подключиться к базе "'+G.DB+'"';
+  return;
+ }
+ try{
+  var Cmd=new ActiveXObject("ADODB.Command");
+  Cmd.ActiveConnection=Conn;
+  G.h.SQL=Cmd;
+ }catch(e){G.Error=e.description;}
+}
+
+// Создание точки подключения к Directum
+function initLP()
+{
+ var e;
+ try{G.h.lp=new ActiveXObject("SBLogon.LoginPoint");}
+ catch(e){G.Error='Клиент Directum не установлен?';}
+}
+
+// Вход в Directum
+function initApp()
+{
+ var e, lp=G.h.lp;
+ delete G.h.lp;
+ try{G.h.D=lp.GetApplication("ServerName="+G.Server+";DBName="+G.DB+";IsOSAuth=1");}
+ catch(e){G.Error=e.description;}
+}
+
+// Получение списка пользователей Directum, для которых нет работника
+function listUsers()
+{
+ G.h.SQL.CommandText="Select Usr.Analit, Usr.Kod, X.UserKod, X.UserName"+
+" From MBVidAn As Z, MBAnalit As Usr, MBUser As X"+
+" Where Z.Kod='ПОЛ' And Z.Vid=Usr.Vid"+
+" And Usr.Dop=X.UserKod And X.NeedEncode='W'"+
+" And X.UserStatus<>'О' And X.UserType='П' And X.UserCategory='О'"+
+" And Not Exists(Select * From MBVidAn As Z, MBAnalit As Wrk"+
+" Where Z.Kod='РАБ' And Z.Vid=Wrk.Vid And Wrk.Polzovatel=Usr.Analit)"+
+" Order By 3";
+
+ G.Users=fetchRs(G.h.SQL.Execute());
+ setTimeout(paintUsers, 1);
+}
+
+// Пометить всех пользователей для обработки
+function clickAll(cb)
+{
+ cb.blur();
+ for(var i in G.Users)
+   with(document.getElementById('cb'+i))
+     if(!disabled) checked=cb.checked;
+}
+
+// Нарисовать таблицу со списком всех пользователей
+function paintUsers()
+{
+ delete G.Stages;
+ with(document.getElementById('Splash')) style.display='none', innerHTML='';
+ var T=document.getElementById('Users');
+ document.getElementById('numUsers').innerHTML=G.Users.length;
+ for(var i in G.Users)
+ {
+  var R=T.insertRow(1+parseInt(i));
+  R.className=i&1? 'Odd':'Even';
+  u=G.Users[i];
+  R.insertCell().innerHTML='<Input Type="CheckBox" id="cb'+i+'" />'
+    +' <Label For="cb'+i+'">'+html(u.UserKod)+'</Label>';
+    
+  R.insertCell().innerHTML=html(u.UserName);
+  for(var ii=1; ii<=4; ii++)R.insertCell().innerHTML='<BR />';
+ }
+ document.getElementById('cbGen').checked=G.Gen;
+ document.getElementById('Query').style.display='block';
+ G.i=0;
+ searchAD();
+}
+
+// Поискать одного пользователя в AD и заполнить его данными строчку в таблице
+function searchAD()
+{
+ var i=G.i, u=G.Users[G.i++];
+ if(!u) return;
+ u.AD=userAD(u.UserKod);
+ u.adX=u.AD? u.AD.userAccountControl&2? '#' : '+' : 0;
+ var R=document.getElementById('Users').rows[1+i];
+
+ with(R.cells[2])
+  innerHTML= u.adX? '<A hRef="https://ekb.ru/abook/person/?u='+escape(u.AD.sAMAccountName)
+    +'" onClick="return WWW(this)" Title="Открыть данные пользователя">'
+    +u.adX+'</A>' : '-',
+  align='center';
+ if(u.AD)
+ {
+  R.title='Пользователь:\t'+u.AD.sAMAccountName
+    +'\nФИО:\t\t'+u.AD.sn+' '+u.AD.givenName+' '+u.AD.middleName
+    +'\nДолжность:\t'+u.AD.title; 
+
+  with(R.cells[3]) innerHTML=u.AD.employeeID, align='right';
+  R.cells[4].innerHTML=u.AD.title;
+  u.Dept={ID:depID(u.AD)};
+  u.Dept.List=findDepts(u.Dept.ID);
+  var S=u.Dept.ID+': ';
+  switch(u.Dept.List.length)
+  {
+   case 0: S+='?'; break;
+   case 1: S+=html(u.Dept.List[0].NameAn); break;
+   default:
+    S+='<Select id="d'+i+'">';
+    for(var dn in u.Dept.List)
+      S+='<Option Value="'+u.Dept.List[dn].Kod+'">'+html(u.Dept.List[dn].NameAn);
+    S+='</Select>';
+  }
+  R.cells[5].innerHTML=S;
+ }
+
+ u.Ok=u.adX=='+' && u.Dept.List.length;
+
+ if(!u.Ok)
+   with(document.getElementById('cb'+i))
+     checked=0, disabled=1;
+
+ setTimeout(searchAD, 1);
+}
+
+// Отформатировать время, прошедшее с указанного
+function timeElapsed(From)
+{
+ var T=((new Date()).getTime()-From.getTime())/1000;
+ return T.toFixed? T.toFixed(1) : T;
+}
+
+// Исполнение одного шага инициализации программы
+function initStage()
+{
+ var R=document.getElementById('Stages');
+ if(!R) return;
+ R=R.rows[1+G.i];
+ if(!R) return;
+ if(G.Side)
+ {
+  G.Stages[G.i++][1]();
+  with(R.cells[3]) innerHTML=timeElapsed(G.Stages[G.i-1].Start), align='Right';
+  R.cells[4].innerHTML=G.Error?'ERROR':'Ok';
+  if(G.Error)
+   document.getElementById('Error').innerHTML=G.Error;
+ }
+ else
+ {
+  R.cells[2].innerHTML=(G.Stages[G.i].Start=new Date()).toLocaleTimeString();
+  with(R.cells[4]) innerHTML='...', align='center';
+ }
+ G.Side=1-G.Side;
+ if(!G.Error)setTimeout(initStage, 1);
+}
+
+// Нарисовать табличку с шагами инициализации программы
+function putSplash()
+{
+ initG();
+
+ var Stages=[
+ ['Подключение к домену', initAD],
+ ['Подключение к SQL-серверу', initSQL],
+ ['Подключение к Directum', initLP],
+ ['Вход в Directum', initApp],
+ ['Поиск пользователей', listUsers]];
+
+ var T=document.getElementById('Stages');
+ for(var i in Stages)
+ {
+  var R=T.insertRow();
+  R.className=i&1? 'Odd':'Even';
+  with(R.insertCell()) innerHTML=parseInt(i)+1, align='right';
+  R.insertCell().innerHTML=Stages[i][0];
+  for(var x=1; x<=3; x++) R.insertCell().innerHTML='<BR />';
+ }
+ G.Stages=Stages;
+ G.i=0;
+ G.Side=0;
+ initStage();
+}
+
+// Сгенерировать пользователя SQL для данного пользователя AD
+function genSQL(u)
+{
+// throw {description: 'Break!'};
+ if(!G.Gen) return '-';
+ var Dom=(Z=new ActiveXObject("ADSystemInfo")).DomainShortName;
+ var e, R, Q=G.h.SQL.ActiveConnection;
+ try{ Q.sp_grantlogin(Dom+"\\"+u.UserKod); }catch(e){ R=1; };
+ try{ Q.sp_adduser(Dom+"\\"+u.UserKod, u.UserKod); }catch(e){ R=1; };
+ if(R) return '?';
+}
+
+// Создать запись в справочнике Персон
+function PRS(u)
+{
+ var Prs=G.h.D.ReferencesFactory.ПРС.GetComponent();
+ Prs.Open();
+ Prs.Insert();
+ Prs.Дополнение=u.AD.sn;		//Фамилия
+ Prs.Дополнение2=u.AD.givenName;	//Имя
+ Prs.Дополнение3=u.AD.middleName;	//Отчество
+ Prs.Строка2=u.AD.mail;			//Личный e-mail
+ Prs.Save();
+ u.PrsKod=Prs.Код;
+}
+
+// Создать запись в справочнике Работников
+function Rab(u)
+{
+ var Wrk=G.h.D.ReferencesFactory.РАБ.GetComponent();
+ Wrk.Open();
+ Wrk.Insert();
+ Wrk.Персона=u.PrsKod;
+ Wrk.Пользователь=u.Kod;
+ Wrk.Подразделение=u.Dept.Kod;
+ Wrk.Строка=u.AD.title;			//Должность
+ Wrk.Дополнение4=u.AD.telephoneNumber;
+ Wrk.Дополнение3=u.AD.employeeID	//Табельный номер
+ Wrk.Дополнение=u.AD.sn+' '+u.AD.givenName+' '+u.AD.middleName; //Фамилия И.О.
+ Wrk.Save();
+}
+
+// Внести в Контакт почтовый адрес пользователя
+function Knt(u)
+{
+ var Knt=G.h.D.ReferencesFactory.КНТ.GetComponent();
+ Knt.Open(); 
+ Knt.OpenRecord();	// Без этого запись не работает (???!)
+ if(!Knt.Locate('Персона', u.PrsKod))
+   throw {description: 'Контакт не найден'};
+// Раньше это работало, но кажется в версии 4.5 удмурты это испортили :-(
+ Knt.Строка2=u.AD.mail;		//Личный e-mail
+ Knt.Save();
+}
+
+// Обработка одной подоперации над одним пользователем
+function runStep()
+{
+ if(G.Col>=G.Cols.length) G.Col=0, G.i++;
+ if(G.i>=G.Stages.length) return;
+ var u=G.Stages[G.i];
+ if(!u) return;
+ var R=document.getElementById('Log').rows[G.i+1];
+ var C=R.cells[G.Col+1];
+ G.Side=1-G.Side;
+ if(G.Side)
+  C.innerHTML='...', C.align='center';
+ else
+ {
+  var e;
+  try{ 
+   C.innerHTML=G.Cols[G.Col].proc(u) || '+'; 
+   G.Col++;
+  }catch(e)
+  {
+   C.innerHTML='ERR';
+   C.title=e.description;
+   G.Col=0, G.i++;
+  }
+ }
+ setTimeout(runStep, 1);
+}
+
+// Собрать пользователей, подлежащих обработке, и нарисовать табличку
+function Run()
+{
+ G.Stages=[];
+ G.Cols=[
+    {n:'SQL', t:'Генерация SQL-пользователя', proc:genSQL},
+    {n:'ПРС', t:'Добавление Персоны', proc:PRS},
+    {n:'РАБ', t:'Добавление Работника', proc:Rab},
+    {n:'КНТ', t:'Установка E-mail в Контакте', proc:Knt}	// Убито в 4.5.0
+];
+ for(var i in G.Users)
+ {
+  if(!document.getElementById('cb'+i).checked) continue;
+  var u=G.Users[i];
+  if(!u.Ok)
+  {
+   alert('Пользователь "'+u.UserKod+'" не может быть (пока) добавлен!');
+   return;
+  }
+  u.Dept.Kod=u.Dept.List.length<=1?
+    u.Dept.List[0].Kod :
+    document.getElementById('d'+i).value;
+  G.Stages.push(u);
+ }
+ if(!G.Stages.length)
+ {
+  alert('Не выбрано ни одного пользователя для добавления!');
+  return;
+ }
+ G.Gen=document.getElementById('cbGen').checked;
+// if(!G.Gen)G.Cols.shift();
+
+ with(document.getElementById('Query')) style.display='none', innerHTML='';
+ var T=document.getElementById('Log');
+
+ for(var i in G.Cols)
+ {
+  var z=G.Cols[i];
+  var c=document.createElement('th');
+  T.rows[0].appendChild(c);
+  c.title=z.t;
+  c.innerText=z.n;
+ }
+ for(var i in G.Stages)
+ {
+  var u=G.Stages[i];
+  var R=T.insertRow();
+  R.className=i&1? 'Odd':'Even';
+  R.insertCell().innerHTML=html(u.UserKod);
+  for(var j in G.Cols) R.insertCell().innerHTML='<BR />';
+ }
+ document.getElementById('Result').style.display='block';
+ G.Side=G.Col=G.i=0;
+ runStep();
+}
+
+//--></Script>
+</head><body>
+<H1>Генерация работников Directum</H1>
+
+<Div id='Splash'>
+Подождите, идёт инициализация приложения...
+<Table id='Stages' Border CellSpacing='0'>
+<TR Class='Head'><TH>№</TH><TH>Этап</TH><TH>Начало</TH><TH>Время</TH><TH>Результат</TH></TR>
+</Table>
+<Div id='Error'></Div>
+</Div>
+
+<Div id='Query'>
+<Table id="Users" Border CellSpacing="0"><TR Class="Head">
+<TH>Пользователь</TH><TH>Имя</TH><TH>AD</TH><TH>Таб.№</TH><TH>Должность</TH><TH>Отдел</TH></TR>
+<TR Class="Head"><TD ColSpan="6">
+<Input Type="CheckBox" id="cbAll" onClick="clickAll(this)"/>
+<Label For="cbAll">Для всех [<Span id='numUsers'>0</Span>]</Label></TD></TR></Table>
+<Table><TR><TD><Input Type="CheckBox" id="cbGen" />
+<Label For="cbGen">Генерировать SQL-пользователей</Label></TD>
+<TD Align="Right"><Input Type="Button" Value="Сгенерировать! &gt;&gt;" onClick="Run()" />
+</TD></TR></Table>
+</Div>
+
+<Div id='Result'>
+<Table id="Log" Border CellSpacing="0">
+<TR Class="Head"><TH>Пользователь</TH></TR>
+</Table>
+</Div>
+
+<Div id='Copyright'><HR />&copy; ОАО &laquo;<A
+hRef='http://ekb.ru' onClick='return WWW(this)'>Уралхиммаш</A>&raquo;, 2008
+</Div>
+
+</body></html>
