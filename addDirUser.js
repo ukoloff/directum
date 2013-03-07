@@ -357,7 +357,7 @@ From sys.sysusers U Inner Join sys.syslogins L
  $.SQL(1)=X;
  if($.SQL.Execute()(0)) return;
 
- $.SQL.ActiveConnection.sp_adduser(X, u);
+ $.SQL.ActiveConnection.sp_adduser(X, this.UserLogin);
 }
 
 function iUser.prototype.fixPOL()
