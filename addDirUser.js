@@ -349,7 +349,7 @@ function iUser.prototype.addSQL()
  $.SQL.CommandText=readSnippet('syslogin.sql');
 /*--[syslogin.sql]---------------------------------------------------
 Select Count(*)
-From sys.sysusers U Inner Join sys.syslogins L
+From sysusers U Inner Join master..syslogins L
  On U.sid=L.sid
  Where U.name=? And L.name=?
 -------------------------------------------------------------------*/
