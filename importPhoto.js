@@ -9,6 +9,7 @@ var $={Dir:{	// Global variable
 
 //WScript.Interactive=false;
 goDB();
+readUser();
 
 //--[Functions]
 
@@ -82,7 +83,7 @@ function readSnippet(name)
 function readUser()
 {
 /*--[List]-----------------------------------------------------------
-Select 
+Select
  Lgn.UserLogin, Prs.Analit
 From
  MBAnalit As Wrk,
@@ -93,8 +94,14 @@ Where Wrk.Vid=(Select Vid From MBVidAn Where Kod='–¿¡')
  And Wrk.Persona=Prs.Analit And Wrk.Polzovatel=Usr.Analit
  And Usr.Dop=Lgn.UserLogin
  And Lgn.UserType='œ' And Lgn.NeedEncode='W'
-Order By 1 
+Order By 1
 -------------------------------------------------------------------*/
+ WScript.Echo("Getting user list...");
+
+ $.U={};
+ $.SQL.CommandText=readSnippet('List');
+ for(var Rs=$.SQL.Execute(); !Rs.EOF; Rs.MoveNext())
+  $.U[Rs('UserLogin').value]=Rs('Analit').value;
 }
 
 //--[EOF]------------------------------------------------------------
