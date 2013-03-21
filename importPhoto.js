@@ -115,6 +115,30 @@ function u2obj(u)
  if(!Rs.EOF) return GetObject(Rs(0).Value);
 }
 
+function rnd(N)
+{
+ for(var S=''; S.length<(N||12); )
+ {
+  var n=Math.floor(62*Math.random());
+  S+=String.fromCharCode('Aa0'.charCodeAt(n/26)+n%26);
+ }
+ return S;
+}
+
+function objOS()
+{
+ var os={};
+ os.fso=new ActiveXObject("Scripting.FileSystemObject");
+ os.sh=new ActiveXObject("WScript.Shell");
+ os.tmpPath=os.sh.ExpandEnvironmentStrings('%TEMP%/');
+ os.tmp=function()
+ {
+  do var n=this.tmpPath+rnd(); while(this.fso.FileExists(n));
+  return n;
+ };
+ return os;
+}
+
 function goJpg()
 {
  WScript.Echo("Processing photos...");
