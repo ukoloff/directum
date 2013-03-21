@@ -139,13 +139,20 @@ function objOS()
  return os;
 }
 
+function storeJpg(Analit, File)
+{
+ var Prs=$.Dir.App.ReferencesFactory.ПРС.GetObjectById(Analit);
+ WScript.Echo(Prs.Наименование);
+ Prs.Requisites('Текст').LoadFromFile(File);
+ Prs.Save();
+}
+
 function goJpg()
 {
  WScript.Echo("Processing photos...");
 
  for(var u in $.U)
  {
-  var Prs=$.U[u];
   var AD=u2obj(u);
   if(!AD) continue;
   var J=AD.thumbnailPhoto;
@@ -163,6 +170,7 @@ function goJpg()
   Stream.SaveToFile(Path, 2);	//adSaveCreateOverWrite
   Stream.Close();
 
+  storeJpg($.U[u], Path);
 
   $.os.fso.DeleteFile(Path);
  }
