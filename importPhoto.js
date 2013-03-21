@@ -8,6 +8,7 @@ var $={Dir:{	// Global variable
 }};
 
 //WScript.Interactive=false;
+goDB();
 
 //--[Functions]
 
@@ -48,6 +49,13 @@ function goAD()
  $.AD.cmd.ActiveConnection=$.AD.h;
  $.AD.cmd.Properties("Page Size")=1000;
  $.AD.cmd.Properties("Searchscope")=2; // ADS_SCOPE_SUBTREE
+}
+
+function goDB()
+{
+ goDir();
+ goSQL();
+ goAD();
 }
 
 // Выделить кусочек текста из исходного кода
