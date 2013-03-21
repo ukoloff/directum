@@ -10,6 +10,7 @@ var $={Dir:{	// Global variable
 //WScript.Interactive=false;
 goDB();
 readUser();
+goJpg();
 
 //--[Functions]
 
@@ -102,6 +103,28 @@ Order By 1
  $.SQL.CommandText=readSnippet('List');
  for(var Rs=$.SQL.Execute(); !Rs.EOF; Rs.MoveNext())
   $.U[Rs('UserLogin').value]=Rs('Analit').value;
+}
+
+// Найти пользователя по имени в AD и вернуть все его данные
+function u2obj(u)
+{
+ $.AD.cmd.CommandText="<LDAP://"+$.AD.baseDN+
+    ">;(&(objectCategory=user)(sAMAccountName="+
+    u.replace(/[()*\\]/g, '\\$&')+"));*;subTree";
+ var Rs=$.AD.cmd.Execute();
+ if(!Rs.EOF) return GetObject(Rs(0).Value);
+}
+
+function goJpg()
+{
+ WScript.Echo("Processing photos...");
+
+ for(var u in $.U)
+ {
+  var Prs=$.U[u];
+  var AD=u2obj(u);
+  if(!AD) continue;
+ }
 }
 
 //--[EOF]------------------------------------------------------------
