@@ -7,9 +7,28 @@ var $={Dir:{	// Global variable
  DB:	'Directum'	// Directum database
 }};
 
-
+//WScript.Interactive=false;
 
 //--[Functions]
+
+function goDir()
+{
+ WScript.Echo("Connecting to Directum...");
+
+ var lp=new ActiveXObject("SBLogon.LoginPoint");
+ $.Dir.App=lp.GetApplication("ServerName="+$.Dir.Server+
+    ";DBName="+$.Dir.DB+";IsOSAuth=1");
+}
+
+function goSQL()
+{
+ var SQL=new ActiveXObject("ADODB.Connection");
+ SQL.Provider='SQLOLEDB';
+ SQL.Open("Integrated Security=SSPI;Data Source="+$.Dir.Server);
+ SQL.DefaultDatabase='['+$.Dir.DB+']';
+ $.SQL=new ActiveXObject("ADODB.Command");
+ $.SQL.ActiveConnection=SQL;
+}
 
 // Выделить кусочек текста из исходного кода
 function readSnippet(name)
