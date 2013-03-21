@@ -148,6 +148,23 @@ function goJpg()
   var Prs=$.U[u];
   var AD=u2obj(u);
   if(!AD) continue;
+  var J=AD.thumbnailPhoto;
+  if(typeof(J)==typeof({}.x)) J=AD.jpegPhoto;
+  if(typeof(J)==typeof({}.x)) continue;
+
+  if(!$.os) $.os=objOS();
+
+  var Path=$.os.tmp();
+
+  var Stream=WScript.CreateObject("adodb.stream");
+  Stream.Type=1;	//adTypeBinary
+  Stream.Open();
+  Stream.Write(J);
+  Stream.SaveToFile(Path, 2);	//adSaveCreateOverWrite
+  Stream.Close();
+
+
+  $.os.fso.DeleteFile(Path);
  }
 }
 
