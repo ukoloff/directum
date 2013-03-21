@@ -84,7 +84,7 @@ function readSnippet(name)
 function readUser()
 {
 /*--[List]-----------------------------------------------------------
-Select
+Select Distinct
  Lgn.UserLogin, Prs.Analit
 From
  MBAnalit As Wrk,
@@ -93,7 +93,7 @@ From
  MBUser As Lgn
 Where Wrk.Vid=(Select Vid From MBVidAn Where Kod='–¿¡')
  And Wrk.Persona=Prs.Analit And Wrk.Polzovatel=Usr.Analit
- And Usr.Dop=Lgn.UserLogin
+ And Usr.Dop=Lgn.UserKod
  And Lgn.UserType='œ' And Lgn.NeedEncode='W'
 Order By 1
 -------------------------------------------------------------------*/
