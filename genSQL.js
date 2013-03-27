@@ -10,7 +10,7 @@ var $={Dir:{	// Global variable
 //WScript.Interactive=false;
 goDB();
 readUsers();
-WScript.Echo($.U.join(', '));
+Process();
 
 //--[Functions]
 
@@ -88,6 +88,26 @@ Order By 1
  $.SQL.CommandText=readSnippet('List');
  for(var Rs=$.SQL.Execute(); !Rs.EOF; Rs.MoveNext())
   $.U.push(Rs(0).value);
+}
+
+// Найти пользователя по имени в AD и вернуть все его данные
+function u2obj(u)
+{
+ $.AD.cmd.CommandText="<LDAP://"+$.AD.baseDN+
+    ">;(&(objectCategory=user)(sAMAccountName="+
+    u.replace(/[()*\\]/g, '\\$&')+"));*;subTree";
+ var Rs=$.AD.cmd.Execute();
+ if(!Rs.EOF) return GetObject(Rs(0).Value);
+}
+
+function Process()
+{
+ for(var i in $.U)
+ {
+  var u=$.U[i];
+  if(!u2obj(u)) continue;
+  WScript.Echo(u);
+ }
 }
 
 //--[EOF]------------------------------------------------------------
