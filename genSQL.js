@@ -80,6 +80,7 @@ Where
  UserType='Ï'
  And NeedEncode='W'
  And UserCategory='Î'
+ And UserStatus<>'Î'
 Order By 1
 -------------------------------------------------------------------*/
  WScript.Echo("Getting user list...");
