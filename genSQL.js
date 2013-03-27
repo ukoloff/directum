@@ -106,7 +106,8 @@ function Process()
  {
   var u=$.U[i];
   if(!u2obj(u)) continue;
-  WScript.Echo(u);
+  var X=$.AD.Domain+'\\'+u;
+  $.SQL.ActiveConnection.sp_grantlogin(X);
  }
 }
 
