@@ -25,6 +25,8 @@ for(var i in Us)
   unlink(Path+'/'+Paths[j]);
 }
 
+unlink(Sh.SpecialFolders('AllUsersDesktop'));
+
 function unlink(f)
 {
  try{ fso.DeleteFile(f+'/Directum.lnk'); }catch(e){}
