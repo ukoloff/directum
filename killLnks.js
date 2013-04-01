@@ -3,6 +3,8 @@
 //
 
 var Key="SOFTWARE\\Microsoft\\Windows NT\\CurrentVersion\\ProfileList";
+var Paths=['Desktop', 'Рабочий стол',
+    'Application Data\\Microsoft\\Internet Explorer\\Quick Launch'];
 
 var R=GetObject("winmgmts:\\\\.\\root\\default:StdRegProv");
 var M=R.Methods_.Item("EnumKey");
@@ -18,7 +20,8 @@ for(var i in Us)
  var S=Us[i];
  var Path=Sh.RegRead('HKLM\\'+Key+'\\'+S+'\\ProfileImagePath');
  Path=Sh.ExpandEnvironmentStrings(Path);
- WScript.Echo(Path);
+ for(var j in Paths)
+  WScript.Echo(Path+'/'+Paths[j]);
 }
 
 //--[EOF]------------------------------------------------------------
