@@ -6,7 +6,9 @@ var Sh=new ActiveXObject("WScript.Shell");
 var F=Sh.RegRead('HKLM\\SOFTWARE\\Microsoft\\Windows\\CurrentVersion\\Explorer\\Shell Folders\\Common AppData')+
     '/NPO Computer/IS-Builder/SystemInfo.xml';
 
-WScript.Echo(F);
+var fso=new ActiveXObject("Scripting.FileSystemObject");
+var X=fso.CreateTextFile(F, true);
+X.Write(readSnippet('XML'));
 
 // Выделить кусочек текста из исходного кода
 function readSnippet(name)
