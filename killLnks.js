@@ -14,6 +14,7 @@ PI.sSubKeyName=Key;
 var Us=VBArray(R.ExecMethod_(M.Name, PI).sNames).toArray();
 
 var Sh=new ActiveXObject("WScript.Shell");
+var fso=new ActiveXObject("Scripting.FileSystemObject");
 
 for(var i in Us)
 {
@@ -21,7 +22,12 @@ for(var i in Us)
  var Path=Sh.RegRead('HKLM\\'+Key+'\\'+S+'\\ProfileImagePath');
  Path=Sh.ExpandEnvironmentStrings(Path);
  for(var j in Paths)
-  WScript.Echo(Path+'/'+Paths[j]);
+  unlink(Path+'/'+Paths[j]);
+}
+
+function unlink(f)
+{
+ try{ fso.DeleteFile(f+'/Directum.lnk'); }catch(e){}
 }
 
 //--[EOF]------------------------------------------------------------
