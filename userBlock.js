@@ -10,6 +10,16 @@ var $={Dir:{	// Global variable
 goDB();
 BlockFromAD();
 
+/*--[POL]------------------------------------------------------------
+Update MBAnalit
+Set Sost='З'
+From MBUser As U, MBAnalit As A, MBVidAn As R
+Where U.UserStatus='О' And U.NeedEncode='W'
+ And A.Dop=U.UserKod And A.Sost<>'З'
+ And A.Vid=R.Vid And R.Kod='ПОЛ'
+-------------------------------------------------------------------*/
+Action('POL', 'Закрытие неактивных записей справочника Пользователи');
+
 //--[Functions]
 
 function goSQL()
@@ -123,6 +133,13 @@ Where UserID=?
   $.SQL(0)=U[i];
   $.SQL.Execute();
  }
+}
+
+function Action(SQL, Note)
+{
+ WScript.Echo(Note+"...");
+ $.SQL.CommandText=readSnippet(SQL);
+ $.SQL.Execute();
 }
 
 //--[EOF]------------------------------------------------------------
