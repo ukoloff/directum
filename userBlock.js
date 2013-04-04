@@ -10,7 +10,7 @@ var $={Dir:{	// Global variable
 goDB();
 BlockFromAD();
 
-/*--[POL]------------------------------------------------------------
+/*--[XPOL]-----------------------------------------------------------
 Update MBAnalit
 Set Sost='З'
 From MBUser As U, MBAnalit As A, MBVidAn As R
@@ -18,7 +18,20 @@ Where U.UserStatus='О' And U.NeedEncode='W'
  And A.Dop=U.UserKod And A.Sost<>'З'
  And A.Vid=R.Vid And R.Kod='ПОЛ'
 -------------------------------------------------------------------*/
-Action('POL', 'Закрытие неактивных записей справочника Пользователи');
+Action('XPOL', 'Закрытие неактивных записей справочника Пользователи');
+
+
+/*--[EPOL]-----------------------------------------------------------
+Update MBAnalit
+Set Sost='Д'
+From MBUser As U, MBAnalit As A, MBVidAn As R
+Where U.UserStatus<>'О' And U.NeedEncode='W'
+ And A.Dop=U.UserKod And A.Sost='З'
+ And A.Vid=R.Vid And R.Kod='ПОЛ'
+-------------------------------------------------------------------*/
+Action('EPOL', 'Открытие заново активированных записей справочника Пользователи');
+
+
 
 //--[Functions]
 
