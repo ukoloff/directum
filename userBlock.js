@@ -8,7 +8,7 @@ var $={Dir:{	// Global variable
 }};
 
 goDB();
-X();
+BlockFromAD();
 
 //--[Functions]
 
@@ -81,21 +81,48 @@ function dbGo(SQL, F)
  }
 }
 
+// Найти пользователя по имени в AD и вернуть все его данные
+function u2obj(u)
+{
+ $.AD.cmd.CommandText="<LDAP://"+$.AD.baseDN+
+    ">;(&(objectCategory=user)(sAMAccountName="+
+    u.replace(/[()*\\]/g, '\\$&')+"));*;subTree";
+ var Rs=$.AD.cmd.Execute();
+ if(!Rs.EOF) return GetObject(Rs(0).Value);
+}
+
 /*--[List]-----------------------------------------------------------
 Select
- UserKod, UserName, UserLogin
+ UserID, UserKod, UserName, UserLogin
 From MBUser
 Where
  NeedEncode='W'
  And UserStatus<>'О'
  And UserCategory='О'
 -------------------------------------------------------------------*/
-function X()
+function BlockFromAD()
 {
+ WScript.Echo("Looking Directum users in AD...");
+
+ var U=[];
  dbGo('List', function(R)
  {
-  WScript.Echo(R.UserLogin, '\t', R.UserName);
+  var iu=u2obj(R.UserLogin);
+  if(iu && iu.userAccountControl&2)
+    U.push(R.UserID);
  });
+/*--[Block]----------------------------------------------------------
+Update MBUser
+Set
+ UserStatus='О'
+Where UserID=?
+-------------------------------------------------------------------*/
+ $.SQL.CommandText=readSnippet('Block');
+ for(var i in U)
+ {
+  $.SQL(0)=U[i];
+  $.SQL.Execute();
+ }
 }
 
 //--[EOF]------------------------------------------------------------
