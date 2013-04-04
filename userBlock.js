@@ -8,6 +8,7 @@ var $={Dir:{	// Global variable
 }};
 
 goDB();
+X();
 
 //--[Functions]
 
@@ -45,6 +46,56 @@ function goDB()
 {
  goSQL();
  goAD();
+}
+
+// Выделить кусочек текста из исходного кода
+function readSnippet(name)
+{
+ var f=WScript.CreateObject("Scripting.FileSystemObject").
+    OpenTextFile(WScript.ScriptFullName, 1);	//ForReading
+ var on, R='';
+ while(!f.AtEndOfStream)
+ {
+  var s=f.ReadLine();
+  if(!on)
+  {
+   if(s.match(/^\s*\/\*[-\s]*\[([.\w]+)\][-\s]+$/i) && (RegExp.$1==name)) on=1;
+   continue;
+  }
+  if(s.match(/^[-\s]+\*\/\s*$/)) break;
+  R+=s+'\n';
+ }
+ f.Close();
+ return R;
+}
+
+function dbGo(SQL, F)
+{
+ $.SQL.CommandText=readSnippet(SQL);
+ for(var Rs=$.SQL.Execute(), N=0; !Rs.EOF; Rs.MoveNext(), N++)
+ {
+  var r={};
+  for(var E=new Enumerator(Rs.Fields); !E.atEnd(); E.moveNext())
+   r[E.item().name]=E.item().value;
+  if(false===F(r, N)) break;
+ }
+}
+
+/*--[List]-----------------------------------------------------------
+Select
+ UserKod, UserName, UserLogin
+From MBUser
+Where
+ NeedEncode='W'
+ And UserStatus<>'О'
+ And UserCategory='О'
+-------------------------------------------------------------------*/
+function X()
+{
+ dbGo('List', function(R)
+ {
+  WScript.Echo(R.UserLogin, '\t', R.UserName);
+ });
 }
 
 //--[EOF]------------------------------------------------------------
