@@ -20,7 +20,6 @@ Where U.UserStatus='О' And U.NeedEncode='W'
 -------------------------------------------------------------------*/
 Action('XPOL', 'Закрытие неактивных записей справочника Пользователи');
 
-
 /*--[EPOL]-----------------------------------------------------------
 Update MBAnalit
 Set Sost='Д'
@@ -31,7 +30,15 @@ Where U.UserStatus<>'О' And U.NeedEncode='W'
 -------------------------------------------------------------------*/
 Action('EPOL', 'Открытие заново активированных записей справочника Пользователи');
 
-
+/*--[RAB]------------------------------------------------------------
+Update W
+Set Sost=U.Sost
+From MBAnalit As U, MBAnalit As W, MBVidAn As R, MBUser As X
+Where R.Kod='РАБ' And W.Vid=R.Vid
+ And W.Polzovatel=U.Analit And W.Sost<>U.Sost
+ And U.Dop=X.UserKod And X.NeedEncode='W'
+-------------------------------------------------------------------*/
+Action('RAB', 'Копирование статуса строк справочника Пользователи в справочник Работники');
 
 //--[Functions]
 
