@@ -40,7 +40,6 @@ Where R.Kod='РАБ' And W.Vid=R.Vid
 -------------------------------------------------------------------*/
 Action('RAB', 'Копирование статуса строк справочника Пользователи в справочник Работники');
 
-
 /*--[PRS]------------------------------------------------------------
 Update P
 Set Sost=W.Sost
@@ -50,6 +49,8 @@ Where R.Kod='РАБ' And W.Vid=R.Vid
  And W.Sost<>P.Sost
 -------------------------------------------------------------------*/
 Action('PRS', 'Копирование статуса строк справочника Работники в справочник Персоны');
+
+killUsers();
 
 //--[Functions]
 
@@ -171,6 +172,25 @@ function Action(SQL, Note)
  WScript.Echo(Note+"...");
  $.SQL.CommandText=readSnippet(SQL);
  $.SQL.Execute();
+}
+
+/*--[qUsers]---------------------------------------------------------
+Select
+ name 
+From sysusers
+Where name in
+ (Select UserKod
+  From MBUser
+  Where UserStatus='О' And NeedEncode='W')
+-------------------------------------------------------------------*/
+function killUsers()
+{
+ WScript.Echo('Удаление пользователей SQL...');
+ dbGo('qUsers', function(R)
+ {
+  WScript.Echo('user:', R.name);
+  try{$.SQL.ActiveConnection.sp_dropuser(R.name); } catch(e){};
+ });
 }
 
 //--[EOF]------------------------------------------------------------
