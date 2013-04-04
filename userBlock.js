@@ -51,6 +51,9 @@ Where R.Kod='РАБ' And W.Vid=R.Vid
 Action('PRS', 'Копирование статуса строк справочника Работники в справочник Персоны');
 
 killUsers();
+killLogins();
+
+WScript.Echo("That's all folks!");
 
 //--[Functions]
 
@@ -190,6 +193,37 @@ function killUsers()
  {
   WScript.Echo('user:', R.name);
   try{$.SQL.ActiveConnection.sp_dropuser(R.name); } catch(e){};
+ });
+}
+
+/*--[DDL]------------------------------------------------------------
+Create Table #Do(
+ main NVarChar(255)
+)
+-------------------------------------------------------------------*/
+/*--[DML]------------------------------------------------------------
+Insert Into #Do(main) Values(?+'\')
+-------------------------------------------------------------------*/
+/*--[qLogins]--------------------------------------------------------
+Select name
+From master..syslogins
+Where name in
+ (Select (Select main From #Do)+UserLogin Collate Cyrillic_General_CI_AS
+  From MBUser
+  Where UserStatus='О' And NeedEncode='W')
+-------------------------------------------------------------------*/
+function killLogins()
+{
+ WScript.Echo('Удаление логинов SQL...');
+ $.SQL.CommandText=readSnippet('DDL');
+ $.SQL.Execute();
+ $.SQL.CommandText=readSnippet('DML');
+ $.SQL(0)=$.AD.Domain;
+ $.SQL.Execute();
+ dbGo('qLogins', function(R)
+ {
+  WScript.Echo('login:', R.name);
+  try{$.SQL.ActiveConnection.sp_revokelogin(R.name);} catch(e){};
  });
 }
 
