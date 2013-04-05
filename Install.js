@@ -52,7 +52,7 @@ function readSnippet(name)
 function isAdmin()
 {
  try{
-  $.sh.RegRead('HKEY_USERS\\S-1-5-20\\');
+  $.sh.RegRead('HKEY_USERS\\S-1-5-20\\Environment\\TMP');
   return true;
  }catch(e){};
 }
@@ -123,8 +123,8 @@ function putXML()
 /*--[Run]------------------------------------------------------------
 /passive
 DIRCODE=DIRECTUM
-DIRLOGPATH=\\Di1\Log\4.9.1 
-DIRPROFILELOGPATH=\\Di1\Log\4.9.1\Profile
+DIRLOGPATH=\\Directum\Log\4.9.1 
+DIRPROFILELOGPATH=\\Directum\Log\4.9.1\Profile
 DIRADMINMAIL=directum@ekb.ru 
 DIRSCDESKTOP=1
 DIRSCADMINUTIL=0 
@@ -135,7 +135,7 @@ DIR_SC_AUTORUN=0
 <?xml version="1.0" encoding="windows-1251" standalone="yes"?>
 <Settings><SystemList><SettingGroup
  Code="DIRECTUM"
- Server="Di1"
+ Server="Directum"
  Database="Directum"
 /></SystemList></Settings>
 -------------------------------------------------------------------*/
