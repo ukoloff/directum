@@ -2,8 +2,9 @@ webpack = require 'webpack'
 cmdize = require './cmdize'
 
 @entry =
-  adduser: "./src/adduser"
-  blockusers: "./src/blockusers"
+  adduser: "./src/add"
+  blockusers: "./src/block"
+  ca: "./src/ca"
 
 @output =
   path: "tmp",
