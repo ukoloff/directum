@@ -17,9 +17,8 @@ me::apply = (compiler)->
       fs.unlink dst
       dst = dst.replace /[.].*?$/, '.bat'
       fs.writeFile dst, toANSI """
-0</*! ::
+0</*! :: See #{ini.homepage}
 @echo off
-REM See #{ini.homepage}
 cscript //nologo //e:javascript "%~f0" %*
 goto :EOF */0;
 #{do z.source}
