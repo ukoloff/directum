@@ -14,7 +14,7 @@ next = ->
   n-- > 0
 
 item = ->
-  "Item #{n}..."  
+  "Item #{n}..."
 
 do ->
   @start = start
