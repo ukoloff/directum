@@ -4,11 +4,15 @@
 // Add to Directum as script 'ca.bat'
 //
 
-MessageBox('Превед!!!'; 'Медвед')
-
 sh=CreateObject('WScript.Shell')
 js=sh.Environment('Process').Item('CA_BAT')
 
 Z=CreateObject('ScriptControl')
 Z.Language='JScript'
 Z.AddCode(ReadFile(js))
+
+Z.eval('start()')
+
+while Z.eval('next()')
+  MessageBox("Iterator"; Z.eval('item()'))
+endwhile  
