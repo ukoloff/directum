@@ -1,4 +1,6 @@
 echo "Сертификаты..."
 
-for k, v of srvdb
-  echo "#{k}=#{v}"
+if WScript?
+  require './run'
+else
+  require './feed'

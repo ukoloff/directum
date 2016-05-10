@@ -1,0 +1,7 @@
+//
+// See https://github.com/ukoloff/directum
+//
+// Add to Directum as script 'ca.bat'
+//
+
+MessageBox('Превед!!!'; 'Медвед')
