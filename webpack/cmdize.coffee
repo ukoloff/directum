@@ -14,13 +14,12 @@ me::apply = (compiler)->
     for k, z of compilation.compilation.assets
       dst = z.existsAt
       continue unless /[.]js$/.test dst
-      fs.unlink dst
+      fs.unlink dst, ->
       dst = dst.replace /[.].*?$/, '.bat'
       fs.writeFile dst, toANSI """
-0</*! ::
+0</*! :: See #{ini.homepage}
 @echo off
-REM See #{ini.homepage}
-cscript //nologo //e:javascript "%~f0" %*
+cscript //nologo //e:javascript "%~f0" %* #{target}
 goto :EOF */0;
 #{do z.source}
 
@@ -29,3 +28,10 @@ goto :EOF */0;
 
 toANSI = (s)->
   iconv.encode s, 'cp1251'
+
+target = ini.targets
+
+target = if ~process.argv.indexOf '-p'
+  target.production
+else
+  target.development

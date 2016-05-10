@@ -3,6 +3,10 @@
   "private": true,
   "version": "0.9.0",
   "description": "Various scripts for Directum administering",
+  "targets": {
+    "development": "Directum2/Directum",
+    "production": "Directum/Directum"
+  },
   "scripts": {
     "test": "node_modules/.bin/webpack -d --watch",
     "start": "node_modules/.bin/webpack -p"
