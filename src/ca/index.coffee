@@ -1,3 +1,4 @@
 echo "Сертификаты..."
 
-echo launcher
+for k, v of srvdb
+  echo "#{k}=#{v}"

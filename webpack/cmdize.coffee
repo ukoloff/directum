@@ -19,7 +19,7 @@ me::apply = (compiler)->
       fs.writeFile dst, toANSI """
 0</*! :: See #{ini.homepage}
 @echo off
-cscript //nologo //e:javascript "%~f0" %*
+cscript //nologo //e:javascript "%~f0" %* #{target}
 goto :EOF */0;
 #{do z.source}
 
@@ -28,3 +28,10 @@ goto :EOF */0;
 
 toANSI = (s)->
   iconv.encode s, 'cp1251'
+
+target = ini.targets
+
+target = if ~process.argv.indexOf '-p'
+  target.production
+else
+  target.development
