@@ -1,11 +1,14 @@
 webpack = require 'webpack'
 cmdize = require './cmdize'
 
-@entry = "./src/adduser"
+@entry =
+  adduser: "./src/add"
+  blockusers: "./src/block"
+  ca: "./src/ca"
 
 @output =
   path: "tmp",
-  filename: "adduser.js"
+  filename: "[name].js"
 
 values = (map)->
   v for k, v of map

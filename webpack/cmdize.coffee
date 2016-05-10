@@ -4,6 +4,7 @@
 #
 fs = require "fs"
 iconv = require "iconv-lite"
+ini = require '../package'
 
 module.exports =
 me = (options)->
@@ -18,8 +19,8 @@ me::apply = (compiler)->
       fs.writeFile dst, toANSI """
 0</*! ::
 @echo off
+REM See #{ini.homepage}
 cscript //nologo //e:javascript "%~f0" %*
-if "%1"==":" pause
 goto :EOF */0;
 #{do z.source}
 
