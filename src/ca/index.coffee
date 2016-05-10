@@ -1,1 +1,3 @@
 echo "Сертификаты..."
+
+echo launcher
