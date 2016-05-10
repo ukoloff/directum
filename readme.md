@@ -1,4 +1,4 @@
-# directum
+# Directum
 
 Скрипты для администрирования [Directum](http://www.directum.ru/).
 
