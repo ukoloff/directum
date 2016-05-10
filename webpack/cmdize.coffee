@@ -19,7 +19,6 @@ me::apply = (compiler)->
 0</*! ::
 @echo off
 cscript //nologo //e:javascript "%~f0" %*
-if "%1"==":" pause
 goto :EOF */0;
 #{do z.source}
 
