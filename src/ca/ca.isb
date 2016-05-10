@@ -5,3 +5,8 @@
 //
 
 MessageBox('Превед!!!'; 'Медвед')
+
+sh=CreateObject('WScript.Shell')
+js=sh.Environment('Process').Item('CA_BAT')
+
+MessageBox('js'; js)
