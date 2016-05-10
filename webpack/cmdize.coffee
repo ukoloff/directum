@@ -3,6 +3,7 @@
 # http://www.dostips.com/forum/viewtopic.php?p=37780#p37780
 #
 fs = require "fs"
+iconv = require "iconv-lite"
 
 module.exports =
 me = (options)->
@@ -14,7 +15,7 @@ me::apply = (compiler)->
       continue unless /[.]js$/.test dst
       fs.unlink dst
       dst = dst.replace /[.].*?$/, '.bat'
-      fs.writeFile dst, """
+      fs.writeFile dst, toANSI """
 0</*! ::
 @echo off
 cscript //nologo //e:javascript "%~f0" %*
@@ -24,3 +25,6 @@ goto :EOF */0;
 
       """
     return
+
+toANSI = (s)->
+  iconv.encode s, 'cp1251'
