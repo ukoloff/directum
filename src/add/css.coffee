@@ -29,6 +29,12 @@ body	{
  background: lime;
 }
 
+#Footer #github {
+  position: absolute;
+  right: 0;
+  bottom: 0;
+}
+
 #C {
  background:	#B0D0F0;
 }
