@@ -3,5 +3,5 @@ module.exports = ->
   ie.ToolBar = false
   ie.Visible = true
   ie.Navigate 'about:blank'
-  WScript.Sleep 100 while ie.Busy
+  wsh.Sleep 100 while ie.Busy
   ie

@@ -3,9 +3,9 @@
 #
 help = ->
   echo """
-Запуск: #{WScript.ScriptName} <Server>/<Database>
+Запуск: #{wsh.ScriptName} <Server>/<Database>
 
-Например: #{WScript.ScriptName} Directum/Directum
+Например: #{wsh.ScriptName} Directum/Directum
   """
   exit 1
 

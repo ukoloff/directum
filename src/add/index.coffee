@@ -1,6 +1,6 @@
 html = require './html'
 
-ie.open()
-ie.write html
+dom.open()
+dom.write html
   c: require './css'
-ie.close()
+dom.close()
