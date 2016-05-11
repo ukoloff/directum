@@ -9,6 +9,10 @@ module.exports = without ->
         content: "text/html; charset=windows-1251"
       title 'Автоматическая генерация персон, работников и контактов'
       style @c
+      coffeescript ->
+        setTimeout ->
+          z = document.getElementsByTagName('input')
+          z[z.length - 1].focus()
     body ->
       h1 'Настройка пользователей Directum'
 
@@ -23,9 +27,18 @@ module.exports = without ->
           li 'Генерирует пользователей SQL'
           li 'Копирует фотографии пользователей при возможности'
 
-        input
-          type: 'button'
-          value: ' нАчать! >> '
+        form -> center ->
+          z = (@z or '').split '/'
+          for n, i in ['Сервер', 'База данных']
+            label n, ' ', ->
+              input
+                value: z[i] or 'Directum'
+                required: true
+            text ' '
+
+          input
+            type: 'submit'
+            value: ' нАчать! >> '
 
         hr()
         text 'Пользователей требуется создать в самом Directum:'
