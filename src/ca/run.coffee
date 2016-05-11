@@ -2,6 +2,8 @@
 # Запуск сценария изнутри Directum
 #
 
+srvdb
+
 x=sh.Environment('Process')
 assign = new Function 'o,k,v', 'o(k)=v'
 assign x, 'CA_BAT', WScript.ScriptFullName
