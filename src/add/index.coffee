@@ -1,6 +1,6 @@
-srvdb
+html = require './html'
 
 ie.open()
-ie.write do without ->
-  div 'Превед, медвед'
+ie.write html
+  c: require './css'
 ie.close()
