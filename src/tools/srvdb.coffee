@@ -6,6 +6,10 @@ help = ->
 Запуск: #{WScript.ScriptName} <Server>/<Database>
 
 Например: #{WScript.ScriptName} Directum/Directum
+
+Умолчания можно дописать в 3 строку файла.
+
+Подробности на <#{PACKAGE.homepage}>.
   """
   exit 1
 
