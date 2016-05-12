@@ -1,1 +1,4 @@
-module.exports = ie().Document
+module.exports = if wsh?
+  ie().Document
+else
+  document

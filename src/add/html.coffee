@@ -9,10 +9,7 @@ module.exports = without ->
         content: "text/html; charset=windows-1251"
       title 'Автоматическая генерация персон, работников и контактов'
       style @c
-      coffeescript ->
-        setTimeout ->
-          z = document.getElementsByTagName('input')
-          z[z.length - 1].focus()
+      script src: @me
     body ->
       h1 'Настройка пользователей Directum'
 

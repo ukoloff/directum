@@ -1,0 +1,4 @@
+setTimeout ->
+  $ 'input'
+  .pop()
+  .focus()
