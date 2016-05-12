@@ -18,6 +18,7 @@ h = @h  # Соединение с сервером
   cmd
 
 @fields = (recordset)->
+  return if recordset.EOF
   r = {}
   each recordset.Fields, (f)->
     r[f.name] = f.value
