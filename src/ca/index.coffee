@@ -1,5 +1,5 @@
-if WScript?
-  echo "Загрузка пользовательских сертификатов Directum v#{PACKAGE.version}"
+if wsh
+  echo "Загрузка пользовательских сертификатов Directum v#{PACKAGE.version} <#{PACKAGE.homepage}>\n"
   require './run'
 else
   require './feed'
