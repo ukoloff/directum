@@ -9,31 +9,24 @@ nocrl # Зачем-то отключаем проверку сертификат
 
 # "Глобальные" переменные
 Application = 0 # Directum's Application
-n = 5
+x = {}
 Q = []
 Crt = {}
 U = {}
 cmdUser = 0
 cmdCrt = 0
+cmdReset = 0
 
-log = 0
 @init = (app, me)->
   Application = app
   c = Application.Connection
   mssql.connect c.ServerName, c.DatabaseName
-  Q = csv zzz = ajax.get URL+"?q=r@;u!@&sort=C&as=csv&rnd=#{rnd()}"
-
-  log = fs.CreateTextFile me+'.log'
-  for z in Q
-    log.WriteLine dump z
+  Q = csv ajax.get "#{URL}?q=r@;u!@&sort=C&as=csv&rnd=#{rnd()}"
 
 @next = ->
-  log.WriteLine("next()")
   fs.DeleteFile Crt.ТекстТ2 if Crt.ТекстТ2
   while x = Q.shift()
-    log.WriteLine("next()2 #{x.u}")
     continue if x.Revoke or not x.u
-    log.WriteLine("User: #{x.u}")
     cmdUser ||= mssql.command """
       Select
        UserLogin, UserKod, UserName, P.Analit, P.Kod
@@ -62,4 +55,29 @@ log = 0
   false
 
 @item = ->
-  "Пункт #{n}..."
+  ajax.dl "#{URL}?as=der&n=#{x.id}", tmp = tmpnam()
+
+  cmdReset ||= mssql.command """
+    Update MBAnValR2
+     Set DefaultCert='Н', CertificateType='Э'
+    Where
+     Analit=?
+  """
+  assign cmdReset, 0, U.Analit
+  cmdReset.Execute()
+
+  Crt =
+    u: x.u
+    Kod: U.Kod
+    Analit: U.Analit
+    ISBStartObjectName: '{B1B27433-D685-47F8-8500-CF9525407145}'
+    СтрокаТ2: U.cn
+    СодержаниеТ2: U.SHA1
+    ТекстТ2: tmp
+    ISBCertificateInfo: U.UserName
+    ISBCertificateType: 'ЭЦП и шифрование'
+    ISBDefaultCert: 'Да'
+    СостояниеТ2: 'Действующая'
+
+  popup dump Crt
+  Crt
