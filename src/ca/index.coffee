@@ -1,4 +1,5 @@
-echo "Сертификаты..."
-
-for k, v of srvdb
-  echo "#{k}=#{v}"
+if wsh
+  echo "Загрузка пользовательских сертификатов Directum v#{PACKAGE.version} <#{PACKAGE.homepage}>\n"
+  require './run'
+else
+  require './feed'
