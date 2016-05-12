@@ -1,1 +1,1 @@
-module.exports = WScript
+module.exports = WScript ? null
