@@ -11,7 +11,7 @@ Z=CreateObject('ScriptControl')
 Z.Language='JScript'
 Z.AddCode(ReadFile(js))
 
-Z.eval('start()')
+Z.Run('init';  Application; js)
 
 while Z.eval('next()')
   MessageBox("Iterator"; Z.eval('item()'))

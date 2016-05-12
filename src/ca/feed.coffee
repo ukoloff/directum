@@ -5,22 +5,17 @@
 
 URL='https://ekb.ru/omz/abook/pki/'
 
-app  = 0
+Application = 0 # Directum's Application
 n = 5
 Q = []
 
-start = (App)->
-  app = app
+@init = (app)->
+  Application = app
   Q = csv ajax.get URL+"?q=r@;u!@&sort=C&as=csv&rnd=#{rnd()}"
   popup "Найдено #{Q.length} сертификатов"
 
-next = ->
+@next = ->
   n-- > 0
 
-item = ->
+@item = ->
   "Пункт #{n}..."
-
-do ->
-  @start = start
-  @next = next
-  @item = item
