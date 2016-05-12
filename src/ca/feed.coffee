@@ -3,8 +3,6 @@
 # Отдаёт сертификаты для установки
 #
 
-URL='https://ekb.ru/omz/abook/pki/'
-
 nocrl # Зачем-то отключаем проверку сертификатов
 
 # "Глобальные" переменные
@@ -21,7 +19,7 @@ cmdReset = 0
   Application = app
   c = Application.Connection
   mssql.connect c.ServerName, c.DatabaseName
-  Q = csv ajax.get "#{URL}?q=r@;u!@&sort=C&as=csv&rnd=#{rnd()}"
+  Q = csv ajax.get "#{PACKAGE.pki}?q=r@;u!@&sort=C&as=csv&rnd=#{rnd()}"
 
 @next = ->
   fs.DeleteFile Crt.ТекстТ2 if Crt.ТекстТ2
@@ -55,7 +53,7 @@ cmdReset = 0
   false
 
 @item = ->
-  ajax.dl "#{URL}?as=der&n=#{x.id}", tmp = tmpnam()
+  ajax.dl "#{PACKAGE.pki}?as=der&n=#{x.id}", tmp = tmpnam()
 
   cmdReset ||= mssql.command """
     Update MBAnValR2
@@ -78,6 +76,3 @@ cmdReset = 0
     ISBCertificateType: 'ЭЦП и шифрование'
     ISBDefaultCert: 'Да'
     СостояниеТ2: 'Действующая'
-
-  popup dump Crt
-  Crt
