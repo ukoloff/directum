@@ -1,1 +1,4 @@
-echo "Превед, медвед!"
+if wsh
+  require './welcome'
+else
+  require './script'

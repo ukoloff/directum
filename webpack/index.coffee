@@ -9,7 +9,8 @@ cmdize = require './cmdize'
 @output =
   path: "tmp",
   filename: "[name].js"
-
+  sourcePrefix: ''
+  
 values = (map)->
   v for k, v of map
 
