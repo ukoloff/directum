@@ -2,7 +2,7 @@
 # CSV parser
 #
 module.exports =
-tsv = (s)->
+csv = (s)->
   a2o arrays s
 
 arrays = (s)->
@@ -48,5 +48,5 @@ a2o = (arr)->
       continue
     res.push rec = {}
     for n, i in F
-      rec[F] = line[i]
+      rec[n] = line[i]
   res

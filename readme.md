@@ -22,7 +22,7 @@
 
 Скрипт запускает Directum (через SBLauncher) и снова выполняет себя же
 из под него. В Directum должен быть установлен сценарий
-[ca_bat](src/ca/ca.isb).
+[ca_bat](src/ca/ca_bat.isb).
 
 ## Разработка
 

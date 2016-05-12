@@ -7,6 +7,7 @@
     "development": "Directum2/Directum",
     "production": "Directum/Directum"
   },
+  "pki": "https://ekb.ru/omz/abook/pki/",
   "scripts": {
     "test": "node_modules/.bin/webpack -d --watch",
     "start": "node_modules/.bin/webpack -p"
