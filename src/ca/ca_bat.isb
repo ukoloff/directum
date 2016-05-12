@@ -1,7 +1,7 @@
 //
 // See https://github.com/ukoloff/directum
 //
-// Add to Directum as script 'ca.bat'
+// Add to Directum as script 'ca_bat'
 //
 
 sh=CreateObject('WScript.Shell')
@@ -22,7 +22,7 @@ while Z.eval('next()')
   CER=POL.DetailDataSet(2)
 
   Events = CER.Events
-  Events.AddCheckPoint()
+  Events.AddCheckPoint()    // <- Только внутри самого Directum!
   Events.Events(9/*dseBeforeInsert*/).Enabled = false
   CER.Append()
   Events.ReleaseCheckPoint()
