@@ -2,21 +2,22 @@
 # Подключение к Active Directory
 #
 
+info = dc = root = base =
 h = @h
 
-@info =
-info = new ActiveXObject "ADSystemInfo"
-
-@dc =
-dc = info.DomainShortName
-
-@rootDSE =
-root = GetObject "LDAP://rootDSE"
-
-@base =
-base = root.Get 'rootDomainNamingContext'
-
 @connect = ->
+  @info =
+  info = new ActiveXObject "ADSystemInfo"
+
+  @dc =
+  dc = info.DomainShortName
+
+  @rootDSE =
+  root = GetObject "LDAP://rootDSE"
+
+  @base =
+  base = root.Get 'rootDomainNamingContext'
+
   @h = h = new ActiveXObject "ADODB.Connection"
   h.Provider = "ADsDSOObject"
   h.Open "Active Directory Provider"
