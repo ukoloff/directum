@@ -17,10 +17,18 @@ h = @h  # Соединение с сервером
   cmd.CommandText = sql
   cmd
 
-@fields = (recordset)->
+@fields =
+fields = (recordset)->
   return if recordset.EOF
   r = {}
   each recordset.Fields, (f)->
     r[f.name] = f.value
     return
   r
+
+@execute = (command, fn)->
+  n = 0
+  rs = command.Execute()
+  while !rs.EOF
+    return if false == fn? fields rs, n++
+    rs.MoveNext()
