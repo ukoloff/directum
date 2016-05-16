@@ -9,3 +9,7 @@ interior.innerHTML = do without ->
     -> thead ->
       th x for x in 'Операция Время Результат'.split ' '
     tbody
+
+window = dom.parentWindow
+
+window.xyz()
