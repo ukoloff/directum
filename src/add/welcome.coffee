@@ -7,5 +7,6 @@ dom.write html
   me: wsh.ScriptFullName
 dom.close()
 
+require './opener'
 require './validate'
 require './loop'
