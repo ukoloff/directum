@@ -17,8 +17,7 @@ step 'Подключение к серверу Directum', ->
   directum.connect validate.s, validate.d
 
 step 'Проверка поддержки фотографий', ->
-  directum.photo =
-    !!directum.app.ReferencesFactory.ПРС.GetComponent().FindRequisite 'Текст'
+  directum.test()
 
 step 'Подключение к серверу MS SQL', ->
   mssql.connect validate.s
@@ -32,7 +31,7 @@ step 'Подключение к Active Directory', ->
 users = []
 
 step 'Поиск пользователей Directum', ->
-  cmd = mssql.command """
+  users = mssql.execute mssql.command """
     Select U.Analit, U.Kod, X.UserKod, X.UserLogin, X.UserName
     From MBAnalit As U, MBUser As X
     Where
@@ -45,13 +44,11 @@ step 'Поиск пользователей Directum', ->
          Polzovatel is not Null
          And Vid=(Select Vid from MBVidAn Where Kod='РАБ'))
     """
-  mssql.execute cmd, (u)->
-    users.push u
 
 step 'Поиск пользователей в AD', ->
   for z in users
     z.AD = ad.user u.UserLogin
 
 step 'Поиск подразделений', ->
-  for z in users when u.AD
+  for z in users
     z.Depts = dept.list z.Dept = dept.id u.AD

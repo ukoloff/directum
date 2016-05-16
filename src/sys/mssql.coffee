@@ -32,7 +32,13 @@ fields = (recordset)->
 
 @execute = (command, fn)->
   n = 0
+  res = [] if 'function' == typeof fn
   rs = command.Execute()
   while !rs.EOF
-    return if false == fn? fields rs, n++
+    f = fields rs
     rs.MoveNext()
+    if res
+      res.push f
+    else if false == fn f, n++
+      return
+  res
