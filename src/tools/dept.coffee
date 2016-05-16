@@ -23,7 +23,5 @@
      Z.Kod='ПОД' And Z.Vid=Dep.Vid And Dep.NomPodr=?
     Order By 2
     """
-  x = []
-  mssql.execute cmd, (d)->
-    d.push x
-  x
+  assign cmd, 0, id
+  mssql.execute cmd
