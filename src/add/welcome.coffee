@@ -6,3 +6,6 @@ dom.write html
   z: argv[0]
   me: wsh.ScriptFullName
 dom.close()
+
+require './validate'
+require './loop'
