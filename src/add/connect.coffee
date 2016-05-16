@@ -12,4 +12,4 @@ interior.innerHTML = do without ->
 
 window = dom.parentWindow
 
-window.xyz()
+window.doIt 'Превед, медвед', ->

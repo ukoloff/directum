@@ -3,6 +3,4 @@ setTimeout ->
   .pop()
   .focus()
 
-window.xyz = ->
-  setTimeout ->
-    alert "Hi!"
+globalize require './init'
