@@ -9,7 +9,7 @@ app = 0
 @init =
 init = ->
   @lp =
-  lp = new ActiveXObject("SBLogon.LoginPoint")
+  lp = new ActiveXObject "SBLogon.LoginPoint"
 
 @connect = (srv, db)->
   init() unless lp

@@ -32,7 +32,7 @@ fields = (recordset)->
 
 @execute = (command, fn)->
   n = 0
-  res = [] if 'function' == typeof fn
+  res = [] if 'function' != typeof fn
   rs = command.Execute()
   while !rs.EOF
     f = fields rs
