@@ -7,8 +7,5 @@ dom.write html
   me: wsh.ScriptFullName
 dom.close()
 
-dom.body.onunload = ->
-  exit 1
-
-while true
-  wsh.Sleep 100
+require './validate'
+require './loop'
