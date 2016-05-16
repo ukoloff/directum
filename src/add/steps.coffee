@@ -13,7 +13,6 @@ step 'Инициализация клиента Directum', ->
   directum.init()
 
 step 'Подключение к серверу Directum', ->
-  z = require './validate'
   directum.connect validate.s, validate.d
 
 step 'Проверка поддержки фотографий', ->
