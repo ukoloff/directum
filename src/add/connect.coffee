@@ -1,15 +1,28 @@
 #
 # Отображение процесса подключения к серверам
 #
-
-interior.innerHTML = do without ->
-  table
-    border: true
-    cellspacing: 0
-    -> thead ->
-      th x for x in 'Операция Время Результат'.split ' '
-    tbody
+steps = require './steps'
 
 window = dom.parentWindow
 
-window.doIt 'Превед, медвед', ->
+require './loop'
+.push ->
+  window.alert 'Превед, медвед!'
+
+
+t = without ->
+  table
+    border: true
+    cellspacing: 0
+    ->
+      thead ->
+        th x for x in '№ Операция Время Результат'.split ' '
+      tbody ->
+        for z, i in @
+          tr ->
+            td align: 'right', i+1
+            td z.title
+            td align: 'right'
+            td align: 'center'
+
+interior.innerHTML = t steps
