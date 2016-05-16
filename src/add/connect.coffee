@@ -19,7 +19,7 @@ t = without ->
         th x for x in '№ Операция Время Результат'.split ' '
       tbody ->
         for z, i in @
-          tr ->
+          tr class: (if i & 1 then 'odd' else 'even'), ->
             td align: 'right', i+1
             td z.title
             td align: 'right'
