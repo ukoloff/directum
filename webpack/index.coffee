@@ -16,6 +16,8 @@ values = (map)->
   v for k, v of map
 
 @module =
+  noParse: values
+    min: /[.]min[.]/
   loaders: values
     coffee:
       test: /[.]coffee$/
