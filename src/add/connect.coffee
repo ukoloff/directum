@@ -20,6 +20,9 @@ t = without ->
               td align: 'right'
               td align: 'center'
 
+tError = without ->
+  b @message
+
 interior.innerHTML = t steps
 
 tbody = $ 'tbody'
@@ -29,9 +32,18 @@ window = dom.parentWindow
 
 connect = ->
   for s, i in steps
-    timer = window.Timer tbody.rows[i].cells[2]
-    wsh.Sleep 1234
-    timer.stop()
+    cells = tbody.rows[i].cells
+    timer = window.Timer cells[2]
+    try
+      do s.fn
+      cells[3].innerHTML = '+'
+    catch e
+      cells[3].innerHTML = tError e
+      err = true
+      break
+    finally
+      timer.stop()
+  exit 1 if err
 
 require './loop'
 .push connect
