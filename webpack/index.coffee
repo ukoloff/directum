@@ -5,12 +5,13 @@ cmdize = require './cmdize'
   adduser: "./src/add"
   blockusers: "./src/block"
   ca: "./src/ca"
+  install: "./src/install"
 
 @output =
   path: "tmp",
   filename: "[name].js"
   sourcePrefix: ''
-  
+
 values = (map)->
   v for k, v of map
 
