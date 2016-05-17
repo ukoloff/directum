@@ -20,7 +20,7 @@ me::apply = (compiler)->
       fs.writeFile dst, toANSI """
 0</*! :: See #{ini.homepage}
 @echo off
-#{cscript z} //nologo //e:javascript "%~f0" %* #{target}
+#{cscript z} //e:javascript "%~f0" %* #{target}
 goto :EOF */0;
 #{do z.source}
 

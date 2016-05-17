@@ -1,0 +1,22 @@
+#
+# Настройки клиента Directum (в формате YAML)
+#
+# Известные параметры:
+# code:             # Код системы
+# server:           # Сервер
+# database:         # База данных
+# logpath:          # Путь к логам
+# profilelogpath:   # Путь к логам профайлинга
+# adminmail:        # Почта техподдержки
+# scdesktop:    1   # Создавать ярлык на рабочем столе
+# scadminutil:  0   # Создавать ярлыки к админ. утилитам
+# _sc_autorun:  0   # Автозапуск клиента
+#
+code: DirTest       # Настройка для всех
+
+# Индивидуальные настройки для пары сервер/БД
+Directum2/Directum:
+  code: DIRECTUM
+  logpath: \\Directum2\Log\5.2.1
+  profilelogpath: \\Directum2\Log\5.2.1\Profile
+  adminmail: directum@ekb.ru
