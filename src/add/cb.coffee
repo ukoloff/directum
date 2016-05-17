@@ -11,7 +11,7 @@ t = without ->
     cellspacing: 0
     ->
       thead ->
-        th x for x in '№,Пользователь,Имя,Таб. №,Подразделение'.split ','
+        th x for x in '№,Пользователь,Имя,Таб. №,Должность,Код,Подразделение'.split ','
       tbody ->
         for u, i in @
           tr
@@ -28,6 +28,8 @@ t = without ->
                   text u.UserLogin
               td u.AD?.displayName
               td u.AD?.employeeId
+              td u.AD?.title
+              td u.Dept
               td switch u.Depts.length
                 when 0
                   -> center '-'
