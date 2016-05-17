@@ -1,4 +1,4 @@
-echo 'Удаление логинов SQL'
+echo 'Поиск удаляемых логинов SQL'
 cmd = mssql.command """
   Select name
   From master..syslogins
@@ -10,7 +10,11 @@ cmd = mssql.command """
 x = []
 mssql.execute cmd, (u)->
   x.push u.name
+
+echo "Удаляем: #{x.join ', '}" if x.length
+
+for u in x
   try
-    mssql.h.ActiveConnection.sp_revokelogin u.name
-  catch
-echo "Удалялись: #{x.join ', '}" if x.length
+    mssql.h.sp_revokelogin u
+  catch e
+    echo "##{e.message}"
