@@ -8,8 +8,12 @@ h = @h  # Соединение с сервером
   @h = h = new ActiveXObject "ADODB.Connection"
   h.Provider = 'SQLOLEDB'
   h.Open "Integrated Security=SSPI;Data Source=#{host}"
-  h.DefaultDatabase="[#{db}]"
+  use db if db
   h
+
+@use =
+use = (db)->
+  h.DefaultDatabase="[#{db}]"
 
 @command = (sql)->
   cmd = new ActiveXObject "ADODB.Command"
@@ -28,7 +32,13 @@ fields = (recordset)->
 
 @execute = (command, fn)->
   n = 0
+  res = [] if 'function' != typeof fn
   rs = command.Execute()
   while !rs.EOF
-    return if false == fn? fields rs, n++
+    f = fields rs
     rs.MoveNext()
+    if res
+      res.push f
+    else if false == fn f, n++
+      return
+  res

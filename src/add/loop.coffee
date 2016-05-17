@@ -2,8 +2,13 @@
 # Ждём выхода из бруазуера
 #
 
-dom.body.onunload = ->
-  exit 1
+module.exports =
+q = []
 
-while true
+dom.body.onunload = ->
+  q.unshift ->
+    exit 1
+
+loop
+  do fn while fn = q.shift()
   wsh.Sleep 100
