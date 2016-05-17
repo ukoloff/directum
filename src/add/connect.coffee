@@ -44,6 +44,7 @@ connect = ->
     finally
       timer.stop()
   exit 1 if err
+  require './cb'
 
 require './loop'
 .push connect

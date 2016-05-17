@@ -30,6 +30,7 @@ step 'Подключение к Active Directory', ->
 users = []
 
 step 'Поиск пользователей Directum', ->
+  steps.users =
   users = mssql.execute mssql.command """
     Select U.Analit, U.Kod, X.UserKod, X.UserLogin, X.UserName
     From MBAnalit As U, MBUser As X
