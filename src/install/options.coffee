@@ -14,8 +14,9 @@ if fs.FileExists yml
 
 opts.push require './srvdb'
 
-module.exports =
 r = {}
 for z in opts when 'object' == typeof z
   for k, v of z when 'object' != typeof v
     r["DIR#{k.toUpperCase()}"] = v
+
+module.exports = ("#{n}=#{r[n]}" for n in Object.keys(r).sort()).join ' '
