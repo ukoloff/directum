@@ -7,10 +7,13 @@ cmd = mssql.command """
      From MBUser
      Where UserStatus='О' And NeedEncode='W')
   """
+cmdX = mssql.command 'exec sp_revokelogin ?'
 x = []
 mssql.execute cmd, (u)->
   x.push u.name
   try
-    mssql.h.ActiveConnection.sp_revokelogin u.name
-  catch
+    assign cmdX, 0, u.name
+    cmdX.Execute()
+  # catch
+
 echo "Удалялись: #{x.join ', '}" if x.length
