@@ -18,9 +18,16 @@ t = without ->
             class: if i & 1 then 'odd' else 'even'
             ->
               td align: 'right', i+1
-              td u.AD.sAMAccountName
-              td u.AD.displayName
-              td u.AD.employeeId
+              td ->
+                if u.AD
+                  a
+                    href: "https://ekb.ru/omz/dc/user/?u=#{u.AD.sAMAccountName}"
+                    target: "_blank"
+                    u.AD.sAMAccountName
+                else
+                  text u.UserLogin
+              td u.AD?.displayName
+              td u.AD?.employeeId
               td switch u.Depts.length
                 when 0
                   -> center '-'
@@ -35,3 +42,4 @@ t = without ->
                     text u.Depts.length
 
 interior.innerHTML = t users
+do require './opener'
