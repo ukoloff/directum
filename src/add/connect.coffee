@@ -3,13 +3,6 @@
 #
 steps = require './steps'
 
-window = dom.parentWindow
-
-require './loop'
-.push ->
-  window.alert 'Превед, медвед!'
-
-
 t = without ->
   table
     border: true
@@ -28,3 +21,17 @@ t = without ->
               td align: 'center'
 
 interior.innerHTML = t steps
+
+tbody = $ 'tbody'
+.pop()
+
+window = dom.parentWindow
+
+connect = ->
+  for s, i in steps
+    timer = window.Timer tbody.rows[i].cells[2]
+    wsh.Sleep 1234
+    timer.stop()
+
+require './loop'
+.push connect

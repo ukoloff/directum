@@ -3,4 +3,4 @@ setTimeout ->
   .pop()
   .focus()
 
-globalize require './init'
+globalize require './timer'
