@@ -11,13 +11,18 @@ t = without ->
     cellspacing: 0
     ->
       thead ->
-        th x for x in '№,Пользователь,Имя,Таб. №,Должность,Код,Подразделение'.split ','
+        for x in '№,Пользователь,Имя,Таб. №,Должность,Код,Подразделение'.
+            split ','
+          th x
       tbody ->
         for u, i in @
           tr
             class: if i & 1 then 'odd' else 'even'
             ->
-              td align: 'right', i+1
+              td align: 'right', nowrap: 'true', ->
+                label i+1, ' ', -> input
+                  type: 'checkbox'
+                  disabled: !u.Depts.length
               td ->
                 if u.AD
                   a
@@ -42,6 +47,9 @@ t = without ->
                         value: z.Kod
                         z.NameAn
                     text u.Depts.length
+      tfoot ->
+        td align: 'right', -> label '* ', -> input type: 'checkbox'
+        td colspan: 6, 'Все найденные'
 
 interior.innerHTML = t users
 do require './opener'
