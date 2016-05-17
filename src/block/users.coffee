@@ -1,4 +1,4 @@
-echo 'Удаление пользователей SQL'
+echo 'Поиск удаляемых пользователей SQL'
 cmd = mssql.command """
   Select
     name
@@ -8,10 +8,15 @@ cmd = mssql.command """
       From MBUser
       Where UserStatus='О' And NeedEncode='W')
   """
+
 x = []
 mssql.execute cmd, (u)->
   x.push u.name
+
+echo "Удаляем: #{x.join ', '}" if x.length
+
+for u in x
   try
-    mssql.h.ActiveConnection.sp_dropuser u.name
-  catch
-echo "Удалялись: #{x.join ', '}" if x.length
+    mssql.h.sp_dropuser u
+  catch e
+    echo "##{e.message}"

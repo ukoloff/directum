@@ -1,4 +1,4 @@
-echo 'Удаление логинов SQL'
+echo 'Поиск удаляемых логинов SQL'
 cmd = mssql.command """
   Select name
   From master..syslogins
@@ -7,13 +7,14 @@ cmd = mssql.command """
      From MBUser
      Where UserStatus='О' And NeedEncode='W')
   """
-cmdX = mssql.command 'exec sp_revokelogin ?'
 x = []
 mssql.execute cmd, (u)->
   x.push u.name
-  try
-    assign cmdX, 0, u.name
-    cmdX.Execute()
-  # catch
 
-echo "Удалялись: #{x.join ', '}" if x.length
+echo "Удаляем: #{x.join ', '}" if x.length
+
+for u in x
+  try
+    mssql.h.sp_revokelogin u
+  catch e
+    echo "##{e.message}"
