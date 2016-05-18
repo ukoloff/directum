@@ -1,3 +1,6 @@
+#
+# Является ли объект массивом
+#
 toString = [].toString
 ok = toString.call []
 

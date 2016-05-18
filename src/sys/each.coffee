@@ -1,3 +1,6 @@
+#
+# Перебор элементов OLE коллекции
+#
 module.exports = (collection, fn)->
   res = [] if 'function' != typeof fn
   n = 0

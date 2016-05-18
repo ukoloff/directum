@@ -1,3 +1,6 @@
+#
+# Запуск браузера
+#
 module.exports = ->
   ie = new ActiveXObject "InternetExplorer.Application"
   ie.ToolBar = false
