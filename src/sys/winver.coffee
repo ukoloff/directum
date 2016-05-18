@@ -2,16 +2,16 @@
 # Windows version
 #
 
-reg = ->
-  for n in arguments
-    try
-      return sh
-      .RegRead "HKLM\\SOFTWARE\\Microsoft\\Windows NT\\CurrentVersion\\" + n
-  return
+keys =
+  ver:  'CurrentVersion'
+  name: 'ProductName'
+  build: 'CurrentBuildNumber,CurrentBuild'
+  sp: 'CSDVersion'
+  ex: 'BuildLabEx,BuildLab'
 
-@ver  = reg 'CurrentVersion'
-@name = reg 'ProductName'
-@build =
-build = reg 'CurrentBuildNumber', 'CurrentBuild'
-@sp = reg 'CSDVersion'
-@ex = reg('BuildLabEx', 'BuildLab') or build
+for k, v of keys
+  for n in v.split ','
+    try
+      @[k] = sh
+        .RegRead "HKLM\\SOFTWARE\\Microsoft\\Windows NT\\CurrentVersion\\#{n}"
+      break
