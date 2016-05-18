@@ -9,14 +9,14 @@ Object.create ||= (proto)->
 Object.keys ||= (obj)->
   k for k, v of obj
 
-Array::forEach ||= (fn)->
-  fn z, i for z, i in @
-  return
-
 Array::indexOf ||= (el)->
   for n, i in @
     return i if el == n
   -1
 
+Array::forEach ||= (fn)->
+  fn z, i, @ for z, i in @
+  return
+
 Array::filter ||= (fn)->
-  z for z, i in @ when fn z, i
+  z for z, i in @ when fn z, i, @
