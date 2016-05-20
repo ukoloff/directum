@@ -108,3 +108,25 @@ steps.push (u)->
   # Раньше это работало, но кажется в версии 4.5 удмурты это испортили :-(
   Knt.Строка2 = u.AD.mail     # Личный e-mail
   Knt.Save()
+
+# SQL
+steps.push (u)->
+  mssql.h.sp_grantlogin X = "#{ad.dc}\\#{u.UserLogin}"
+
+  cmd = mssql.command """
+    Select Count(*) as N
+    From sysusers U Inner Join master..syslogins L
+      On U.sid=L.sid
+      Where U.name=? And L.name=?
+    """
+  assign cmd, 0, u.UserLogin
+  assign cmd, 1, X
+
+  return if mssql.execute cmd
+  .pop().N
+
+  # mssql.h.sp_adduser X, u.UserLogin
+  cmd = mssql.command "Exec sp_adduser ?, ?"
+  assign cmd, 0, X
+  assign cmd, 1, u.UserLogin
+  cmd.Execute()
