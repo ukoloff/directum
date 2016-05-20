@@ -1,3 +1,6 @@
+#
+# HTTP запросы
+#
 Servers = ["Msxml2.XMLHTTP", "Microsoft.XMLHTTP"]
 
 module.exports =
