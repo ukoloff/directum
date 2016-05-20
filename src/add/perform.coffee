@@ -89,11 +89,6 @@ steps.push (u)->
   Wrk = directum.app.ReferencesFactory.РАБ.GetComponent()
   Wrk.Open()
   Wrk.Insert()
-  popup """
-  Wrk.Персона = #{u.PrsKod}
-  Wrk.Пользователь = #{u.Kod}
-  Wrk.Подразделение = #{id2kod u.Dept.Analit}/#{u.Dept.Analit}
-  """
   Wrk.Персона = u.PrsKod
   Wrk.Пользователь = u.Kod
   Wrk.Подразделение = id2kod u.Dept.Analit
@@ -102,3 +97,14 @@ steps.push (u)->
   Wrk.Дополнение3 = u.AD.employeeID       # Табельный номер
   Wrk.Дополнение = "#{u.AD.sn} #{u.AD.givenName} #{u.AD.middleName}"
   Wrk.Save()
+
+# КНТ
+steps.push (u)->
+  Knt = directum.app.ReferencesFactory.КНТ.GetComponent()
+  Knt.Open()
+  Knt.OpenRecord()    # Без этого запись не работает (???!)
+  unless Knt.Locate 'Персона', u.PrsKod
+    throw Error 'Контакт не найден'
+  # Раньше это работало, но кажется в версии 4.5 удмурты это испортили :-(
+  Knt.Строка2 = u.AD.mail     # Личный e-mail
+  Knt.Save()
