@@ -25,7 +25,8 @@ body	{
  position: absolute;
  left: expression(eval(document.documentElement.scrollLeft));
  width: expression(eval(document.documentElement.clientWidth));
- top: expression(document.documentElement.clientHeight-this.offsetHeight+document.documentElement.scrollTop);
+ top: expression(document.documentElement.clientHeight -
+   this.offsetHeight+document.documentElement.scrollTop);
  background: lime;
 }
 
@@ -57,7 +58,7 @@ H1	{
  text-align:	right;
 }
 
-#pg1Btn {
+.text-right {
  text-align:	right;
 }
 
@@ -80,17 +81,5 @@ TH	{
 
 .Odd	{
  background: #AAAACC;
-}
-
-#Spinner {
- text-align:	center;
- padding:	0.3ex;
-}
-
-#Spinner Span {
- padding:	0 0.5ex;
- margin:	0 0.2ex;
- x-width:	1ex;
- border:	1px solid #EEEEEE;
 }
 """

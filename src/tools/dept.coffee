@@ -16,12 +16,12 @@
   return [] unless id
   cmd = mssql.command """
     Select
-     Dep.Kod, Dep.NameAn
+     Dep.Analit, Dep.Kod, Dep.NameAn
     From
      MBVidAn As Z, MBAnalit As Dep
     Where
      Z.Kod='ПОД' And Z.Vid=Dep.Vid And Dep.NomPodr=?
-    Order By 2
+    Order By 3
     """
   assign cmd, 0, id
   mssql.execute cmd

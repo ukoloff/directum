@@ -15,14 +15,11 @@ step 'Инициализация клиента Directum', ->
 step 'Подключение к серверу Directum', ->
   directum.connect validate.s, validate.d
 
-step 'Проверка поддержки фотографий', ->
-  directum.test()
-
 step 'Подключение к серверу MS SQL', ->
   mssql.connect validate.s
 
 step 'Выбор базы данных MS SQL', ->
-  mssql.use validate.db
+  mssql.use validate.d
 
 step 'Подключение к Active Directory', ->
   ad.connect()
@@ -30,6 +27,7 @@ step 'Подключение к Active Directory', ->
 users = []
 
 step 'Поиск пользователей Directum', ->
+  steps.users =
   users = mssql.execute mssql.command """
     Select U.Analit, U.Kod, X.UserKod, X.UserLogin, X.UserName
     From MBAnalit As U, MBUser As X
@@ -46,8 +44,8 @@ step 'Поиск пользователей Directum', ->
 
 step 'Поиск пользователей в AD', ->
   for z in users
-    z.AD = ad.user u.UserLogin
+    z.AD = ad.user z.UserLogin
 
 step 'Поиск подразделений', ->
   for z in users
-    z.Depts = dept.list z.Dept = dept.id u.AD
+    z.Depts = dept.list z.Dept = dept.id z.AD
