@@ -24,7 +24,7 @@ t = without ->
           tr ->
             td align: 'right', i+1
             td u.AD.sAMAccountName
-            td() for i in [1..5]
+            td align: 'center' for i in [1..5]
 
 interior.innerHTML = t users
 
@@ -65,3 +65,15 @@ steps.push (u)->
   POL = directum.app.ReferencesFactory.ПОЛ.GetObjectById u.Analit
   POL.Дополнение3 = u.AD.cn
   POL.Save()
+
+# ПРС
+steps.push (u)->
+  Prs = directum.app.ReferencesFactory.ПРС.GetComponent()
+  Prs.Open()
+  Prs.Insert()
+  Prs.Дополнение = u.AD.sn           # Фамилия
+  Prs.Дополнение2 = u.AD.givenName   # Имя
+  Prs.Дополнение3 = u.AD.middleName  # Отчество
+  Prs.Строка2 = u.AD.mail        		 # Личный e-mail
+  Prs.Save()
+  u.PrsKod = Prs.Код
