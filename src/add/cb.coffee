@@ -84,6 +84,14 @@ cboxes = for r in tbody.rows
   z = $ 'input', r.cells[0]
   .pop()
 
+# Общий чекбокс
+$ 'input', $('tfoot', interior)[0]
+.pop()
+.onclick = ->
+  checked = @checked
+  z.checked = checked for z in cboxes when not z.disabled
+  do toggleBtn
+
 toggleBtn = ->
   for z in cboxes when z.checked and not z.disabled
     btn.disabled = false
@@ -92,11 +100,20 @@ toggleBtn = ->
 
 z.onclick = toggleBtn for z in cboxes
 
-# Общий чекбокс
-$ 'input', $('tfoot', interior)[0]
-.pop()
-.onclick = ->
-  checked = @checked
-  for z in cboxes when not z.disabled
-    z.checked = checked
-  do toggleBtn
+gatherData = ->
+  module.exports =
+  res = []
+  for r, i in tbody.rows when cboxes[i].checked and not cboxes[i].disabled
+    u = users[i]
+    idx = if u.Depts.length > 1
+      $ 'select', r
+      .pop()
+      .selectedIndex
+    else 0
+    u.Dept = u.Depts[idx]
+    res.push u
+  res
+
+btn.onclick = ->
+  return unless gatherData().length
+  require './perform'
