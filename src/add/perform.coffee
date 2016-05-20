@@ -28,8 +28,40 @@ t = without ->
 
 interior.innerHTML = t users
 
+tbody = $ 'tbody', interior
+.pop()
+
 perform = ->
-  popup "Hi!"
+  for u, i in users
+    row = tbody.rows[i]
+    for step, n in steps
+      cell = row.cells[2+n]
+      try
+        step u
+        cell.innerHTML = '+'
+      catch error
+        cell.innerHTML = '#'
+        cell.title = error.message
 
 require './loop'
 .push perform
+
+steps = []
+
+# ПОЛ
+steps.push (u)->
+  cmd = mssql.command """
+    Update MBUser
+    Set
+      UserName=?,
+      Domain = ?
+    Where UserLogin=?
+    """
+  assign cmd, 0, u.AD.cn
+  assign cmd, 1, ad.dc
+  assign cmd, 2, u.UserLogin
+  cmd.Execute()
+
+  POL = directum.app.ReferencesFactory.ПОЛ.GetObjectById u.Analit
+  POL.Дополнение3 = u.AD.cn
+  POL.Save()
