@@ -6,7 +6,8 @@ cmdize = require './cmdize'
   blockusers: "./src/block"
   ca: "./src/ca"
   install: "./src/install"
-
+  loadphoto: "./src/photo"
+  
 @output =
   path: "tmp",
   filename: "[name].js"
