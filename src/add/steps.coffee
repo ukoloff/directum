@@ -15,9 +15,6 @@ step 'Инициализация клиента Directum', ->
 step 'Подключение к серверу Directum', ->
   directum.connect validate.s, validate.d
 
-step 'Проверка поддержки фотографий', ->
-  directum.test()
-
 step 'Подключение к серверу MS SQL', ->
   mssql.connect validate.s
 
