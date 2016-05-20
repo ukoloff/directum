@@ -65,6 +65,7 @@ steps.push (u)->
   POL = directum.app.ReferencesFactory.ПОЛ.GetObjectById u.Analit
   POL.Дополнение3 = u.AD.cn
   POL.Save()
+  u.Kod = POL.Код
 
 # ПРС
 steps.push (u)->
@@ -77,3 +78,27 @@ steps.push (u)->
   Prs.Строка2 = u.AD.mail        		 # Личный e-mail
   Prs.Save()
   u.PrsKod = Prs.Код
+
+# Временный код для поиска кода подразделения по id
+# SQL сервер убивает русские буквы :-)
+id2kod = (id)->
+  directum.app.ReferencesFactory.ПОД.GetObjectById(id).Код
+
+# РАБ
+steps.push (u)->
+  Wrk = directum.app.ReferencesFactory.РАБ.GetComponent()
+  Wrk.Open()
+  Wrk.Insert()
+  popup """
+  Wrk.Персона = #{u.PrsKod}
+  Wrk.Пользователь = #{u.Kod}
+  Wrk.Подразделение = #{id2kod u.Dept.Analit}/#{u.Dept.Analit}
+  """
+  Wrk.Персона = u.PrsKod
+  Wrk.Пользователь = u.Kod
+  Wrk.Подразделение = id2kod u.Dept.Analit
+  Wrk.Строка = u.AD.title                 # Должность
+  Wrk.Дополнение4 = u.AD.telephoneNumber
+  Wrk.Дополнение3 = u.AD.employeeID       # Табельный номер
+  Wrk.Дополнение = "#{u.AD.sn} #{u.AD.givenName} #{u.AD.middleName}"
+  Wrk.Save()
