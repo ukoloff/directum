@@ -64,4 +64,4 @@ module.exports = without ->
             id: 'github'
             href: PACKAGE.homepage
             target: '_blank'
-            'Исходный код'
+            'Source'

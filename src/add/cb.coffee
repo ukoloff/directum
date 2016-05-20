@@ -6,6 +6,16 @@ users = require './steps'
 .users
 
 t = without ->
+  infos =
+    ServerVersion: 'Версия сервера'
+    ClientVersion: 'Версия клиента'
+    Name: 'Наименование'
+    ServerName: 'Сервер'
+    DatabaseName: 'База данных'
+    Code: 'Код системы'
+  ul ->
+    for k, v of infos
+      li (-> b v), ': ', @sys[k]
   table
     border: true
     cellspacing: 0
@@ -15,7 +25,7 @@ t = without ->
             split ','
           th x
       tbody ->
-        for u, i in @
+        for u, i in @users
           tr
             class: if i & 1 then 'odd' else 'even'
             ->
@@ -51,5 +61,8 @@ t = without ->
         td align: 'right', -> label '* ', -> input type: 'checkbox'
         td colspan: 6, 'Все найденные'
 
-interior.innerHTML = t users
+interior.innerHTML = t
+  users: users
+  sys: directum.app.Connection.SystemInfo
+
 do require './opener'
