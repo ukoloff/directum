@@ -25,7 +25,7 @@ tError = without ->
 
 interior.innerHTML = t steps
 
-tbody = $ 'tbody'
+tbody = $ 'tbody', interior
 .pop()
 
 window = dom.parentWindow

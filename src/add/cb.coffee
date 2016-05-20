@@ -54,15 +54,49 @@ t = without ->
                   -> select ->
                     for z in u.Depts
                       option
-                        value: z.Kod
+                        value: z.Analit
                         z.NameAn
                     text u.Depts.length
       tfoot ->
         td align: 'right', -> label '* ', -> input type: 'checkbox'
         td colspan: 6, 'Все найденные'
+  div
+    class: 'text-right'
+    -> input
+      type: 'button'
+      disabled: true
+      value: ' Генерировать! >> '
 
 interior.innerHTML = t
   users: users
   sys: directum.app.Connection.SystemInfo
 
 do require './opener'
+
+# Кнопка
+btn = $ 'input', interior
+.pop()
+
+# Чекбоксы
+tbody = $ 'tbody', interior
+.pop()
+cboxes = for r in tbody.rows
+  z = $ 'input', r.cells[0]
+  .pop()
+
+toggleBtn = ->
+  for z in cboxes when z.checked and not z.disabled
+    btn.disabled = false
+    return
+  btn.disabled = true
+
+z.onclick = toggleBtn for z in cboxes
+
+# Общий чекбокс
+$ 'input', $('tfoot', interior)[0]
+.pop()
+.onclick = ->
+  checked = @checked
+  for z in cboxes when not z.disabled
+    z.checked = checked
+  do toggleBtn
