@@ -46,5 +46,4 @@ finish = ->
   .pop()
   .innerHTML = "That's all folks!"
 
-require './loop'
-.push perform
+evloop.push perform
