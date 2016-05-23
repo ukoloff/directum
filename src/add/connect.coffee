@@ -1,7 +1,7 @@
 #
 # Отображение процесса подключения к серверам
 #
-steps = require './steps'
+steps = require './connect.steps'
 
 t = without ->
   table
