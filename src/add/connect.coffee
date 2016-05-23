@@ -17,8 +17,8 @@ t = without ->
             ->
               td align: 'right', i+1
               td z.title
-              td align: 'right'
-              td align: 'center'
+              td align: 'right', br
+              td align: 'center', br
 
 tError = without ->
   b @message
