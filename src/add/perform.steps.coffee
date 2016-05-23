@@ -1,8 +1,6 @@
 #
 # Этапы генерации пользователя
 #
-photo = require './photo'
-
 module.exports =
 steps = []
 
@@ -35,11 +33,7 @@ step 'ПРС', 'Генерация персоны', (u)->
   Prs.Дополнение2 = u.AD.givenName   # Имя
   Prs.Дополнение3 = u.AD.middleName  # Отчество
   Prs.Строка2 = u.AD.mail        		 # Личный e-mail
-  if img = photo u.AD
-    req = Prs.Requisites 'Текст'
-    req.LoadFromFile img
-    req.Extension = 'jpg'
-    Prs.ДаНет = 'Да'
+  directum.photo Prs, img = ad.photo u.AD
   Prs.Save()
   fs.DeleteFile img if img
   u.PrsKod = Prs.Код
