@@ -7,6 +7,10 @@ dom.write html
   me: wsh.ScriptFullName
 dom.close()
 
+$ 'input'
+.pop()
+.focus()
+
 do require './opener'
 
 require './validate'
