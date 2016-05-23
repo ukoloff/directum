@@ -9,7 +9,18 @@ module.exports = without ->
         content: "text/html; charset=windows-1251"
       title 'Автоматическая генерация персон, работников и контактов'
       style @c
-      script src: @me
+      coffeescript ->
+        @Timer = (cell)->
+          start = new Date
+
+          do draw = ->
+            cell.innerHTML = ((new Date - start)/1000).toFixed 2
+
+          h = setInterval draw, 100
+
+          stop: ->
+            clearInterval h
+            do draw
     body ->
       h1 'Настройка пользователей Directum'
 

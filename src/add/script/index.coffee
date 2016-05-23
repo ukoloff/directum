@@ -1,1 +1,0 @@
-globalize require './timer'
