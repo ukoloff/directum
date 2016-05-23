@@ -18,7 +18,7 @@ t = without ->
           tr ->
             td align: 'right', i+1
             td u.AD.sAMAccountName
-            td align: 'center' for i in [1..5]
+            td align: 'center', br for i in [1..5]
   center()
 
 interior.innerHTML = t
