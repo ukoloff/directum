@@ -10,5 +10,6 @@ dom.close()
 do require './opener'
 
 require './validate'
+try require './users'
 
 evloop.start()
