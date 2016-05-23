@@ -2,7 +2,7 @@
 # Нарисовать список пользователей с крыжиками
 #
 
-users = require './steps'
+users = require './connect.steps'
 .users
 
 t = without ->
