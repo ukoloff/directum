@@ -1,7 +1,6 @@
 #
 # Собственно загрузка фоток
 #
-photo = require '../add/photo'
 echo "Соединяемся с mssql://#{srvdb.s}/#{srvdb.d}"
 mssql.connect srvdb.s, srvdb.d
 
@@ -27,16 +26,12 @@ cmd = mssql.command """
   Order By 1
   """
 mssql.execute cmd, (z)->
-  unless u = ad.user z.UserLogin
-    return
+  return unless u = ad.user z.UserLogin
+  return unless img = ad.photo u
   echo z.UserLogin
-  unless img = photo u
-    return
 
   Prs = directum.app.ReferencesFactory.ПРС.GetObjectById z.Analit
-  req = Prs.Requisites 'Текст'
-  req.LoadFromFile img
-  Prs.ДаНет = 'Да'
+  directum.photo Prs, img
   Prs.Save()
 
   fs.DeleteFile img
