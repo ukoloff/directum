@@ -19,6 +19,7 @@ t = without ->
             td align: 'right', i+1
             td u.AD.sAMAccountName
             td align: 'center' for i in [1..5]
+  center()
 
 interior.innerHTML = t
   steps: steps
@@ -38,6 +39,12 @@ perform = ->
       catch error
         cell.innerHTML = '#'
         cell.title = error.message
+  finish()
+
+finish = ->
+  $ 'center', interior
+  .pop()
+  .innerHTML = "That's all folks!"
 
 require './loop'
 .push perform
