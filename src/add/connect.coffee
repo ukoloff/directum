@@ -46,5 +46,4 @@ connect = ->
   exit 1 if err
   require './cb'
 
-require './loop'
-.push connect
+evloop.push connect

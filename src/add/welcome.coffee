@@ -8,5 +8,7 @@ dom.write html
 dom.close()
 
 do require './opener'
+
 require './validate'
-require './loop'
+
+evloop.start()
