@@ -25,12 +25,12 @@ interior.innerHTML = t
   steps: steps
   users: users
 
-tbody = $ 'tbody', interior
+tBody = $ 'tbody', interior
 .pop()
 
 perform = ->
   for u, i in users
-    row = tbody.rows[i]
+    row = tBody.rows[i]
     for step, n in steps
       cell = row.cells[2+n]
       try

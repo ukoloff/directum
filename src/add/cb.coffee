@@ -78,9 +78,9 @@ btn = $ 'input', interior
 .pop()
 
 # Чекбоксы
-tbody = $ 'tbody', interior
+tBody = $ 'tbody', interior
 .pop()
-cboxes = for r in tbody.rows
+cboxes = for r in tBody.rows
   z = $ 'input', r.cells[0]
   .pop()
 
@@ -103,7 +103,7 @@ z.onclick = toggleBtn for z in cboxes
 gatherData = ->
   module.exports =
   res = []
-  for r, i in tbody.rows when cboxes[i].checked and not cboxes[i].disabled
+  for r, i in tBody.rows when cboxes[i].checked and not cboxes[i].disabled
     u = users[i]
     idx = if u.Depts.length > 1
       $ 'select', r

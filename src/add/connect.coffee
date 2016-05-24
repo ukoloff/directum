@@ -25,14 +25,14 @@ tError = without ->
 
 interior.innerHTML = t steps
 
-tbody = $ 'tbody', interior
+tBody = $ 'tbody', interior
 .pop()
 
 window = dom.parentWindow
 
 connect = ->
   for s, i in steps
-    cells = tbody.rows[i].cells
+    cells = tBody.rows[i].cells
     timer = window.Timer cells[2]
     try
       do s.fn
