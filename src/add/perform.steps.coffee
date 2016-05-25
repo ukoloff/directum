@@ -66,7 +66,7 @@ step 'КНТ', 'Настройка контакта', (u)->
 
 step 'SQL', 'Генерация пользователя SQL', (u)->
   login = "#{ad.dc}\\#{u.UserLogin}"
-  mssql.h.sp_grantlogin login
+  mssql.h.sp_grantlogin login if sqllogins
 
   cmd = mssql.command """
     Select Count(*) as N
