@@ -36,7 +36,7 @@ cmd = (text)->
 # Найти пользователя по имени в AD и вернуть все его данные
 @user = (u)->
   rs = cmd "<LDAP://#{base}>;(&(objectCategory=user)(sAMAccountName=#{
-    u.replace(/[()*\\]/g, '\\$&')
+    u.replace /[()*\\]/g, '\\$&'
     }));*;subTree"
   .Execute()
   GetObject rs(0).Value unless rs.EOF
