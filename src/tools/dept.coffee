@@ -23,5 +23,5 @@
      Z.Kod='ПОД' And Z.Vid=Dep.Vid And Dep.NomPodr=?
     Order By 3
     """
-  assign cmd, 0, id
+  assign.l cmd, id
   mssql.execute cmd

@@ -35,7 +35,7 @@ cmdReset = 0
        P.Vid=V.Vid And V.Kod='ПОЛ'
        And U.UserLogin=?
     """
-    assign cmdUser, 0, x.u
+    assign.l cmdUser, x.u
     continue unless U = mssql.fields cmdUser.Execute()
     U.cn = x.subj.replace(/.*\/CN=/i, '').replace /\/.*/, ''
 
@@ -46,8 +46,7 @@ cmdReset = 0
        Analit=?
        And SoderT2=?
     """
-    assign cmdCrt, 0, U.Analit
-    assign cmdCrt, 1, U.SHA1 = x.SHA1.replace /\W/g, ''
+    assign.l cmdCrt, U.Analit, U.SHA1 = x.SHA1.replace /\W/g, ''
     continue if cmdCrt.Execute()(0).value
     return true
   false
@@ -61,8 +60,8 @@ cmdReset = 0
     Where
      Analit=?
   """
-  assign cmdReset, 0, U.Analit
-  cmdReset.Execute()
+  assign.l cmdReset, U.Analit
+  .Execute()
 
   Crt =
     u: x.u

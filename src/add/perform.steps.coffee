@@ -15,10 +15,8 @@ step 'ПОЛ', 'Обновление пользователя Directum', (u)->
       Domain = ?
     Where UserLogin=?
     """
-  assign cmd, 0, u.AD.cn
-  assign cmd, 1, ad.dc
-  assign cmd, 2, u.UserLogin
-  cmd.Execute()
+  assign.l cmd, u.AD.cn, ad.dc, u.UserLogin
+  .Execute()
 
   POL = directum.app.ReferencesFactory.ПОЛ.GetObjectById u.Analit
   POL.Дополнение3 = u.AD.cn
@@ -67,7 +65,8 @@ step 'КНТ', 'Настройка контакта', (u)->
   Knt.Save()
 
 step 'SQL', 'Генерация пользователя SQL', (u)->
-  mssql.h.sp_grantlogin X = "#{ad.dc}\\#{u.UserLogin}"
+  login = "#{ad.dc}\\#{u.UserLogin}"
+  mssql.h.sp_grantlogin login
 
   cmd = mssql.command """
     Select Count(*) as N
@@ -75,14 +74,12 @@ step 'SQL', 'Генерация пользователя SQL', (u)->
       On U.sid=L.sid
       Where U.name=? And L.name=?
     """
-  assign cmd, 0, u.UserLogin
-  assign cmd, 1, X
+  assign.l cmd, u.UserLogin, login
 
   return if mssql.execute cmd
   .pop().N
 
-  # mssql.h.sp_adduser X, u.UserLogin
+  # mssql.h.sp_adduser login, u.UserLogin
   cmd = mssql.command "Exec sp_adduser ?, ?"
-  assign cmd, 0, X
-  assign cmd, 1, u.UserLogin
-  cmd.Execute()
+  assign.l cmd, login, u.UserLogin
+  .Execute()

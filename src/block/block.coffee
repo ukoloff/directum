@@ -26,6 +26,6 @@ if x.length
   names = []
   for u in x
     names.push u.UserLogin
-    assign cmd, 0, u.UserID
-    cmd.Execute()
+    assign.l cmd, u.UserID
+    .Execute()
   echo "Заблокированы: #{names.join ', '}"

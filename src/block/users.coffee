@@ -30,8 +30,8 @@ if x.length
 
 for u in x
   try
-    assign cmd, 0, u
-    cmd.Execute()
+    assign.l cmd, u
+    .Execute()
     mssql.h.sp_dropuser u
   catch e
     echo "##{e.message}"
