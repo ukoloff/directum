@@ -6,7 +6,7 @@ h = @h  # Соединение с сервером
 
 @connect = (host, db)->
   @h = h = new ActiveXObject "ADODB.Connection"
-  h.Provider = 'SQLOLEDB'
+  h.Provider = 'SQLOLEDB'	# 'SQLNCLI10' For Native Client
   h.Open "Integrated Security=SSPI;Data Source=#{host}"
   use db if db
   h
