@@ -56,7 +56,7 @@ t = without ->
                       option
                         value: z.Analit
                         z.NameAn
-                    text u.Depts.length
+                    false
       tfoot ->
         td align: 'right', -> label '* ', -> input type: 'checkbox'
         td colspan: 6, 'Все найденные'
