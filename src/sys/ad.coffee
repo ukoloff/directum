@@ -27,7 +27,7 @@ h = @h
 cmd = (text)->
   z = new ActiveXObject "ADODB.Command"
   z.ActiveConnection = h
-  assign.o z.Properties
+  assign.o z.Properties,
     "Page Size": 1000
     Searchscope: 2    # ADS_SCOPE_SUBTREE
   z.CommandText = text
