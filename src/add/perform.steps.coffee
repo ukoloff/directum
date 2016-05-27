@@ -65,8 +65,7 @@ step 'КНТ', 'Настройка контакта', (u)->
   Knt.Save()
 
 step 'SQL', 'Генерация пользователя SQL', (u)->
-  login = "#{ad.dc}\\#{u.UserLogin}"
-  mssql.h.sp_grantlogin login if sqllogins
+  mssql.h.sp_grantlogin login = "#{ad.dc}\\#{u.UserLogin}"
 
   cmd = mssql.command """
     Select Count(*) as N
@@ -76,10 +75,15 @@ step 'SQL', 'Генерация пользователя SQL', (u)->
     """
   assign.l cmd, u.UserLogin, login
 
-  return if mssql.execute cmd
+  unless mssql.execute cmd
   .pop().N
+    # mssql.h.sp_adduser login, u.UserLogin
+    cmd = mssql.command "Exec sp_adduser ?, ?"
+    assign.l cmd, login, u.UserLogin
+    .Execute()
 
-  # mssql.h.sp_adduser login, u.UserLogin
-  cmd = mssql.command "Exec sp_adduser ?, ?"
-  assign.l cmd, login, u.UserLogin
-  .Execute()
+  unless sqllogins
+    # mssql.h.sp_revokelogin login
+    cmd = mssql.command "Exec sp_revokelogin ?"
+    assign.l cmd, login
+    .Execute()
