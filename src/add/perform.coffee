@@ -15,10 +15,12 @@ t = without ->
         th title: z.title, z.id for z in @steps
       tbody ->
         for u, i in @users
-          tr ->
-            td align: 'right', i+1
-            td u.AD.sAMAccountName
-            td align: 'center', br for i in [1..5]
+          tr
+            class: if i & 1 then 'odd' else 'even'
+            ->
+              td align: 'right', i+1
+              td u.AD.sAMAccountName
+              td align: 'center', br for i in [1..5]
   center()
 
 interior.innerHTML = t
@@ -39,6 +41,7 @@ perform = ->
       catch error
         cell.innerHTML = '#'
         cell.title = error.message
+        throw error if DEBUG
   finish()
 
 finish = ->

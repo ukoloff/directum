@@ -27,15 +27,15 @@ cmdReset = 0
     continue if x.Revoke or not x.u
     cmdUser ||= mssql.command """
       Select
-       UserLogin, UserKod, UserName, P.Analit, P.Kod
+        UserLogin, UserKod, UserName, P.Analit, P.Kod
       From
-       mbUser U, mbAnalit P, mbVidAn V
+        mbUser U, mbAnalit P, mbVidAn V
       Where
-       U.NeedEncode='W' And U.UserKod=P.Dop And
-       P.Vid=V.Vid And V.Kod='ПОЛ'
-       And U.UserLogin=?
+        U.NeedEncode='W' And U.UserKod=P.Dop And
+        P.Vid=V.Vid And V.Kod='ПОЛ'
+        And U.UserLogin=?
     """
-    assign cmdUser, 0, x.u
+    assign.l cmdUser, x.u
     continue unless U = mssql.fields cmdUser.Execute()
     U.cn = x.subj.replace(/.*\/CN=/i, '').replace /\/.*/, ''
 
@@ -43,11 +43,10 @@ cmdReset = 0
       Select Count(*) As N
       From MBAnValR2
       Where
-       Analit=?
-       And SoderT2=?
+        Analit=?
+        And SoderT2=?
     """
-    assign cmdCrt, 0, U.Analit
-    assign cmdCrt, 1, U.SHA1 = x.SHA1.replace /\W/g, ''
+    assign.l cmdCrt, U.Analit, U.SHA1 = x.SHA1.replace /\W/g, ''
     continue if cmdCrt.Execute()(0).value
     return true
   false
@@ -57,12 +56,12 @@ cmdReset = 0
 
   cmdReset ||= mssql.command """
     Update MBAnValR2
-     Set DefaultCert='Н', CertificateType='Э'
+      Set DefaultCert='Н', CertificateType='Э'
     Where
-     Analit=?
+      Analit=?
   """
-  assign cmdReset, 0, U.Analit
-  cmdReset.Execute()
+  assign.l cmdReset, U.Analit
+  .Execute()
 
   Crt =
     u: x.u

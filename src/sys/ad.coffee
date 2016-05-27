@@ -27,16 +27,16 @@ h = @h
 cmd = (text)->
   z = new ActiveXObject "ADODB.Command"
   z.ActiveConnection = h
-  p = z.Properties
-  assign p, "Page Size", 1000
-  assign p, "Searchscope", 2    # ADS_SCOPE_SUBTREE
+  assign.o z.Properties,
+    "Page Size": 1000
+    Searchscope: 2    # ADS_SCOPE_SUBTREE
   z.CommandText = text
   z
 
 # Найти пользователя по имени в AD и вернуть все его данные
 @user = (u)->
   rs = cmd "<LDAP://#{base}>;(&(objectCategory=user)(sAMAccountName=#{
-    u.replace(/[()*\\]/g, '\\$&')
+    u.replace /[()*\\]/g, '\\$&'
     }));*;subTree"
   .Execute()
   GetObject rs(0).Value unless rs.EOF
