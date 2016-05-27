@@ -41,6 +41,7 @@ perform = ->
       catch error
         cell.innerHTML = '#'
         cell.title = error.message
+        throw error if DEBUG
   finish()
 
 finish = ->
