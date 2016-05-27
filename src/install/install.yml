@@ -12,11 +12,12 @@
 # scadminutil:  0   # Создавать ярлыки к админ. утилитам
 # _sc_autorun:  0   # Автозапуск клиента
 #
-code: DirTest       # Настройка для всех
 
-# Индивидуальные настройки для пары сервер/БД
+# Настройка для всех:
+adminmail: directum@ekb.ru
+
+# Индивидуальные настройки для пары сервер/БД:
 Directum2/Directum:
   code: DIRECTUM
   logpath: \\Directum2\Log\5.2.1
   profilelogpath: \\Directum2\Log\5.2.1\Profile
-  adminmail: directum@ekb.ru
