@@ -74,4 +74,4 @@ module.exports = without ->
           target: '_blank'
           onClick: 'this.blur()'
           "Уралхиммаш"
-        raw '&raquo;, 2013 - ', new Date().getFullYear(), ' '
+        raw '&raquo;, 2013 - ', new Date().getFullYear()
