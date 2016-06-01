@@ -1,7 +1,3 @@
-#
-# Просто CSS без всяких там
-#
-module.exports = """
 body	{
  background:	#A0C0E0 URL(about:blank) no-repeat fixed;
  margin:	0;
@@ -82,4 +78,3 @@ TH	{
 .Odd	{
  background: #AAAACC;
 }
-"""
