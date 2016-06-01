@@ -7,7 +7,7 @@ cmdize = require './cmdize'
   ca: "./src/ca"
   install: "./src/install"
   loadphoto: "./src/photo"
-  
+
 @output =
   path: "tmp",
   filename: "[name].js"
@@ -26,12 +26,15 @@ values = (map)->
     litcoffee:
       test: /[.](litcoffee|coffee[.]md)$/
       loader: "coffee-loader?literate"
+    styl:
+      test: /[.]styl$/
+      loader: 'raw!stylus?compress'
 
 brk = (s)->
   s.split ' '
 
 @resolve =
-  extensions: brk " .js .coffee .litcoffee .coffee.md"
+  extensions: brk " .js .coffee .litcoffee .coffee.md .styl"
 
 stringify = (rec)->
   res = {}
