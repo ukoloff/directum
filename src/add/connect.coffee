@@ -40,7 +40,7 @@ connect = ->
     catch e
       cells[3].innerHTML = tError e
       err = true
-      throw error if DEBUG
+      throw e if DEBUG
       break
     finally
       timer.stop()
