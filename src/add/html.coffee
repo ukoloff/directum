@@ -63,6 +63,11 @@ module.exports = without ->
 
       p()
       div id: 'Footer', ->
+        a
+          id: 'github'
+          href: PACKAGE.homepage
+          target: '_blank'
+          'Source'
         raw '&copy; ОАО &laquo;'
         a
           href: 'http://ekb.ru'
@@ -70,8 +75,3 @@ module.exports = without ->
           onClick: 'this.blur()'
           "Уралхиммаш"
         raw '&raquo;, 2013 - ', new Date().getFullYear(), ' '
-        a
-          id: 'github'
-          href: PACKAGE.homepage
-          target: '_blank'
-          'Source'
