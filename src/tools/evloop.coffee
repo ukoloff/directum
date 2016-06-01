@@ -13,3 +13,5 @@ q.start = ->
   loop
     do fn while fn = q.shift()
     wsh.Sleep 100
+    
+  return
