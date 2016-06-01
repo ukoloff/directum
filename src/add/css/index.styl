@@ -1,76 +1,61 @@
-body	{
- background:	#A0C0E0 URL(about:blank) no-repeat fixed;
- margin:	0;
- padding:	0.3ex;
- color:		black;
- font-family:	Verdana, Arial, sans-serif;
- text-align:	justify;
-}
+body
+  background: #A0C0E0 URL(about:blank) no-repeat fixed
+  margin 0
+  padding 0.3ex
+  color black
+  font-family Verdana, Arial, sans-serif
+  text-align justify
 
-#Footer {
- position: fixed;
- bottom: 0;
- left: 0;
- width: 100%;
- font-size: 87%;
- white-space: nowrap;
- border-top: 1px dashed navy;
- background: lime;
-}
+#Footer
+  position fixed
+  bottom 0
+  left 0
+  width 100%
+  font-size 87%
+  white-space nowrap
+  border-top 1px dashed navy
+  background lime
+  #github
+    position absolute
+    right 0
+    bottom 0
 
-* html #Footer {
- position: absolute;
-}
+*
+  html
+    #Footer
+      position absolute
 
-#Footer #github {
-  position: absolute;
-  right: 0;
-  bottom: 0;
-}
+#C
+  background #B0D0F0
 
-#C {
- background:	#B0D0F0;
-}
+#D
+  display none
+  background yellow
+  text-align center
 
-#D {
- display:	none;
- background:	yellow;
- text-align:	center;
-}
+.Flip
+  #C
+    display none
+  #D
+    display block
 
-.Flip #C {
- display:	none;
-}
+H1
+  text-align right
 
-.Flip #D {
- display:	block;
-}
+.text-right
+  text-align right
 
-H1	{
- text-align:	right;
-}
+Table
+  width 100%
 
-.text-right {
- text-align:	right;
-}
+THead, TFoot
+  background white
 
-Table	{
- width: 100%;
+TH
+  text-align center
 
-}
+.Even
+  background #CCCCEE
 
-THead, TFoot {
- background:	white;
-}
-
-TH	{
- text-align: center;
-}
-
-.Even	{
- background: #CCCCEE;
-}
-
-.Odd	{
- background: #AAAACC;
-}
+.Odd
+  background #AAAACC
