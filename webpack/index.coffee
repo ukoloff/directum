@@ -26,15 +26,15 @@ values = (map)->
     litcoffee:
       test: /[.](litcoffee|coffee[.]md)$/
       loader: "coffee-loader?literate"
-    css:
-      test: /[.]css$/
-      loader: 'raw'
+    styl:
+      test: /[.]styl$/
+      loader: 'raw!stylus'
 
 brk = (s)->
   s.split ' '
 
 @resolve =
-  extensions: brk " .js .coffee .litcoffee .coffee.md .css"
+  extensions: brk " .js .coffee .litcoffee .coffee.md .styl"
 
 stringify = (rec)->
   res = {}

@@ -13,17 +13,13 @@ body	{
  left: 0;
  width: 100%;
  font-size: 87%;
- white-space:nowrap;
+ white-space: nowrap;
  border-top: 1px dashed navy;
+ background: lime;
 }
 
 * html #Footer {
  position: absolute;
- left: expression(eval(document.documentElement.scrollLeft));
- width: expression(eval(document.documentElement.clientWidth));
- top: expression(document.documentElement.clientHeight -
-   this.offsetHeight+document.documentElement.scrollTop);
- background: lime;
 }
 
 #Footer #github {
