@@ -28,7 +28,7 @@ values = (map)->
       loader: "coffee-loader?literate"
     styl:
       test: /[.]styl$/
-      loader: 'raw!stylus'
+      loader: 'raw!stylus?compress'
 
 brk = (s)->
   s.split ' '
