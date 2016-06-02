@@ -13,5 +13,4 @@ module.exports = do ->
     each p.SubFolders, (f)->
       p = fs.BuildPath f.Path, 'SBLauncher.exe'
       res = p if fs.FileExists p
-  throw Error 'SBLauncher.exe not found!' unless res
   res
