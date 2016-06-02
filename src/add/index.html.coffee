@@ -31,9 +31,9 @@ module.exports = without ->
           """
         ul ->
           li 'Создаёт записи в справочниках Персоны и Работники'
-          li 'Обновляет данные в справочниках Пользователи и Контакты из Active Directory'
+          li 'Обновляет данные в справочниках Пользователи и Контакты'
           li 'Генерирует пользователей SQL'
-          li 'Копирует фотографии пользователей при возможности'
+          li 'Копирует фотографии пользователей'
 
         form -> center ->
           z = (@z or '').split '/'
@@ -72,6 +72,5 @@ module.exports = without ->
         a
           href: 'http://ekb.ru'
           target: '_blank'
-          onClick: 'this.blur()'
           "Уралхиммаш"
         raw '&raquo;, 2013 - ', new Date().getFullYear()

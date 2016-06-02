@@ -2,23 +2,7 @@
 # Отображение процесса подключения к серверам
 #
 steps = require './connect.steps'
-
-t = without ->
-  table
-    border: true
-    cellspacing: 0
-    ->
-      thead ->
-        th x for x in '№ Операция Время Результат'.split ' '
-      tbody ->
-        for z, i in @
-          tr
-            class: if i & 1 then 'odd' else 'even'
-            ->
-              td align: 'right', i+1
-              td z.title
-              td align: 'right', br
-              td align: 'center', br
+t = require './connect.html'
 
 tError = without ->
   b @message
@@ -30,7 +14,7 @@ tBody = $ 'tbody', interior
 
 window = dom.parentWindow
 
-connect = ->
+evloop.push ->
   for s, i in steps
     cells = tBody.rows[i].cells
     timer = window.Timer cells[2]
@@ -46,5 +30,3 @@ connect = ->
       timer.stop()
   exit 1 if err
   require './cb'
-
-evloop.push connect

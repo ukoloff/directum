@@ -1,4 +1,4 @@
-html = require './html'
+html = require './index.html'
 
 dom.open()
 dom.write html

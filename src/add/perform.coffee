@@ -1,27 +1,9 @@
 #
 # Собственно генерация пользователей а также всего, что понадобится впредь (ц)
 #
-
 users = require './cb'
 steps = require './perform.steps'
-
-t = without ->
-  table
-    border: true
-    cellspacing: 0
-    ->
-      thead ->
-        th z for z in '№ Пользователь'.split ' '
-        th title: z.title, z.id for z in @steps
-      tbody ->
-        for u, i in @users
-          tr
-            class: if i & 1 then 'odd' else 'even'
-            ->
-              td align: 'right', i+1
-              td u.AD.sAMAccountName
-              td align: 'center', br for i in [1..5]
-  center()
+t = require './perform.html'
 
 interior.innerHTML = t
   steps: steps
@@ -30,7 +12,7 @@ interior.innerHTML = t
 tBody = $ 'tbody', interior
 .pop()
 
-perform = ->
+evloop.push ->
   for u, i in users
     row = tBody.rows[i]
     for step, n in steps
@@ -42,11 +24,9 @@ perform = ->
         cell.innerHTML = '#'
         cell.title = error.message
         throw error if DEBUG
-  finish()
+  do finish
 
 finish = ->
   $ 'center', interior
   .pop()
   .innerHTML = "That's all folks!"
-
-evloop.push perform
