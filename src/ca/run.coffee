@@ -2,6 +2,8 @@
 # Запуск Directum и сценария в нём
 #
 
+throw Error 'SBLauncher.exe not found!' unless launcher
+
 script = wsh.ScriptName.replace /\W+/, '_'
 
 assign sh.Environment('Process'), script.toUpperCase(), wsh.ScriptFullName

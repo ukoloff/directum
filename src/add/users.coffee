@@ -2,14 +2,14 @@
 # Запуск оснастки "Пользователи"
 #
 
-validate = require './validate'
+val = require './validate'
 
 $ 'a', interior
 .shift()
 .onclick = ->
-  if validate.test()
+  if launcher and val.test()
     evloop.push ->
       sh.Run """
-        "#{launcher}" -S=#{validate.s} -D=#{validate.d} -CT=Reference -F=SYSTEM_USERS
+        "#{launcher}" -S=#{val.s} -D=#{val.d} -CT=Reference -F=SYSTEM_USERS
         """
   false
