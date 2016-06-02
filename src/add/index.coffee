@@ -13,6 +13,6 @@ $ 'input'
 do require './opener'
 
 require './validate'
-try require './users'
+require './users'
 
 evloop.start()
