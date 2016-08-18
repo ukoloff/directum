@@ -11,7 +11,7 @@ cmdize = require './cmdize'
 @output =
   path: "tmp",
   filename: "[name].js"
-  sourcePrefix: ''
+  sourcePrefix: ''    # Fix for withOut
 
 values = (map)->
   v for k, v of map
@@ -22,10 +22,10 @@ values = (map)->
   loaders: values
     coffee:
       test: /[.]coffee$/
-      loader: "coffee-loader"
+      loader: "coffee"
     litcoffee:
       test: /[.](litcoffee|coffee[.]md)$/
-      loader: "coffee-loader?literate"
+      loader: "coffee?literate"
     styl:
       test: /[.]styl$/
       loader: 'raw!stylus?compress'
