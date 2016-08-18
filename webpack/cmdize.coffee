@@ -15,9 +15,9 @@ me::apply = (compiler)->
     for k, z of compilation.compilation.assets
       dst = z.existsAt
       continue unless /[.]js$/.test dst
+      bat = RegExp.leftContext + '.bat'
       fs.unlink dst, ->
-      dst = dst.replace /[.].*?$/, '.bat'
-      fs.writeFile dst, toANSI """
+      fs.writeFile bat, toANSI """
 0</*! :: See #{ini.homepage}
 @echo off
 #{cscript z} //e:javascript "%~f0" %* #{target}
