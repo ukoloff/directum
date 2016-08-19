@@ -286,7 +286,7 @@ Where
 `DIRECTUM Enterprise 5 2 1 с инструментом разработчика.zip`
 (в папке \\DIRECTUM\F$\Directum\Distrib\5.2.1):
 
-  * Конструктор документов - DocumentGenerator\DocumentGenerator-,,bit.exe
+  * Конструктор документов - DocumentGenerator\DocumentGenerator-??bit.exe
   * Интеграция с MS Office - OfficeInt\OfficeIntegration-??bit.exe
 
 ## Настройка после обновления
@@ -385,7 +385,7 @@ rd "%SystemDrive%\Documents and Settings\Default User\Application Data\NPO Compu
 rd "%SystemDrive%\Users\Default\AppData\Roaming\NPO Computer\IS-Builder" /s /q
 ```
 
-Очистку метададанных на стороне сервера лучше выполнять в нерабочее время:
+Очистка метададанных на стороне сервера (лучше выполнять в нерабочее время):
 
   * Выполнить SQL: `Update SBMetadataLastUpdates Set LastUpdate = GETDATE(), Metadata = null`
   * Перезапустить сервер сеансов
