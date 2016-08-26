@@ -9,6 +9,12 @@ Object.create ||= (proto)->
 Object.keys ||= (obj)->
   k for k, v of obj
 
+Array.isArray ||= do ->
+  toString = {}.toString
+  ok = toString.call []
+  (obj)->
+    ok == toString.call obj
+
 Array::indexOf ||= (el)->
   for n, i in @
     return i if el == n
