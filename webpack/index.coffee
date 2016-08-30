@@ -1,5 +1,6 @@
 webpack = require 'webpack'
 cmdize = require './cmdize'
+ugly = require './ugly'
 
 @entry =
   adduser: "./src/add"
@@ -53,3 +54,6 @@ stringify = (rec)->
   defines: new webpack.DefinePlugin
     PACKAGE: stringify require '../package'
   globals: new webpack.ProvidePlugin require './autoload'
+  ugly: new ugly
+    output:
+      max_line_len: 80
