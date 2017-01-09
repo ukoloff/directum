@@ -14,14 +14,13 @@ d.MyAtTr = "Another try"
 d.MyCB = (w)->
   wnd = w
 
-d.write """
-<#{tag = 'script'}><!--
-#{
-fs.OpenTextFile wsh.ScriptFullName, 1
-.ReadAll()
-}
-//--></#{tag}>
-"""
+t = without (s)->
+  script -> raw "<!--\n", s, '\n//-->'
+
+s = fs.OpenTextFile wsh.ScriptFullName, 1
+  .ReadAll()
+
+d.write t s
 
 echo 'Attr =', d.MyAtTr
 wnd.alert 'А так?'
