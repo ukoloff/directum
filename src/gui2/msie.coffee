@@ -2,4 +2,4 @@
 Run in browser
 ###
 
-alert 'Превед, медвед!'
+alert 'Превед, медвед!\n' + document.MyAtTr
