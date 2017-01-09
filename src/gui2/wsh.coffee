@@ -29,5 +29,6 @@ d.close()
 # wnd.alert 'А так?'
 
 js = d.createElement 'script'
-js.innerHTML = 'alert("Превед!")'
+source = d.createTextNode 'alert("Превед!")'
+js.appendChild source
 d.getElementsByTagName('head')[0].appendChild js
