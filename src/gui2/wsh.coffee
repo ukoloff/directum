@@ -15,12 +15,16 @@ d.MyCB = (w)->
   wnd = w
 
 t = without (s)->
-  script -> raw "<!--\n", s, '\n//-->'
+  html ->
+    head ->
+      script -> raw "<!--\n", s, '\n//-->'
+    body ->
 
 s = fs.OpenTextFile wsh.ScriptFullName, 1
   .ReadAll()
 
 d.write t s
+d.close()
 
-echo 'Attr =', d.MyAtTr
-wnd.alert 'А так?'
+# echo 'Attr =', d.MyAtTr
+# wnd.alert 'А так?'
