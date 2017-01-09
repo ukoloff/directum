@@ -16,22 +16,30 @@ d.MyCB = (w)->
   # w.alert 'Callback called!'
   wsh
 
-t = without (s)->
+t0 = without (s)->
+  coffeescript ->
+    document.$ = window
+    return
+
+t1 = without (s)->
   html ->
     head ->
-      coffeescript ->
-        eval document.$
-        return
     body ->
 
 s = fs.OpenTextFile wsh.ScriptFullName, 1
   .ReadAll()
 
-d.$ = s
-d.write t()
+d.write t0()
 d.close()
+wnd = d.$
 
+### Don't work in MSIE6
+d.open()
+d.write t1()
+d.close()
+###
 
+wnd.eval s
 # echo 'Attr =', d.MyAtTr
 # wnd.alert 'А так?'
 
