@@ -35,6 +35,6 @@
     "stylus": "^0.54.5",
     "stylus-loader": "^2.1.0",
     "webpack": "^1.13.0",
-    "without": "^1.1.2"
+    "without": "^1.2.1"
   }
 }

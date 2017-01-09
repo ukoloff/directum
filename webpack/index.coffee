@@ -8,6 +8,7 @@ ugly = require './ugly'
   ca: "./src/ca"
   install: "./src/install"
   loadphoto: "./src/photo"
+  gui2: "./src/gui2"
 
 @output =
   path: "tmp",
