@@ -2,4 +2,7 @@
 Test new generation of GUI
 ###
 
-echo "Превед!"
+if window?
+  require './msie'
+else
+  require './wsh'
