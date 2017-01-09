@@ -13,7 +13,8 @@ d.open()
 d.MyAtTr = "Another try"
 d.MyCB = (w)->
   wnd = w
-  w.alert 'Callback called!'
+  # w.alert 'Callback called!'
+  wsh
 
 t = without (s)->
   html ->
@@ -33,3 +34,6 @@ js = d.createElement 'script'
 source = d.createTextNode s
 js.appendChild source
 d.getElementsByTagName('head')[0].appendChild js
+
+loop
+  wsh.Sleep 100

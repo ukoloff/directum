@@ -3,7 +3,7 @@ Run in browser
 ###
 
 # alert 'Превед, медвед!\n' + document.MyAtTr
-document.MyCB window
+wsh = document.MyCB window
 
 tT = without ->
   title 'Заголовок!!!'
@@ -18,3 +18,5 @@ setTimeout ->
   # alert document.body
   document.getElementsByTagName('body')[0]
   .innerHTML = do tB
+
+  wsh.Echo 'Call WScript from MSIE'
