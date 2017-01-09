@@ -21,12 +21,13 @@ t = without (s)->
     head ->
       coffeescript ->
         document.w = window
+        return
     body ->
 
 s = fs.OpenTextFile wsh.ScriptFullName, 1
   .ReadAll()
 
-d.write t s
+d.write t()
 d.close()
 
 d.w.eval s
@@ -40,5 +41,8 @@ source = d.createTextNode s
 js.appendChild source
 d.getElementsByTagName('head')[0].appendChild js
 ###
+
+###
 loop
   wsh.Sleep 100
+###
