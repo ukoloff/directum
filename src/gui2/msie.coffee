@@ -2,4 +2,5 @@
 Run in browser
 ###
 
-alert 'Я тут!'
+setTimeout ->
+  alert 'Я тут!'
