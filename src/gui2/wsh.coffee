@@ -20,17 +20,17 @@ t = without (s)->
   html ->
     head ->
       coffeescript ->
-        document.w = window
+        eval document.$
         return
     body ->
 
 s = fs.OpenTextFile wsh.ScriptFullName, 1
   .ReadAll()
 
+d.$ = s
 d.write t()
 d.close()
 
-d.w.eval s
 
 # echo 'Attr =', d.MyAtTr
 # wnd.alert 'А так?'
