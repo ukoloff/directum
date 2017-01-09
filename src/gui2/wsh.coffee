@@ -17,7 +17,6 @@ d.MyCB = (w)->
 t = without (s)->
   html ->
     head ->
-      script -> raw "<!--\n", s, '\n//-->'
     body ->
 
 s = fs.OpenTextFile wsh.ScriptFullName, 1
@@ -28,3 +27,7 @@ d.close()
 
 # echo 'Attr =', d.MyAtTr
 # wnd.alert 'А так?'
+
+js = d.createElement 'script'
+js.innerHTML = 'alert("Превед!")'
+d.getElementsByTagName('head')[0].appendChild js
