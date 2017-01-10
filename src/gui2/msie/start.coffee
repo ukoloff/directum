@@ -2,9 +2,6 @@ window.onunload = ->
   echo 'Bye!'
   exit 0
 
-document.title = 'Превед, медвед!'
-
-echo """
-  WScript from MSIE:
-  Я тут!
-  """
+document.getElementsByTagName('body')[0].innerHTML = do without ->
+  h1 'Превед'
+  text 'Медвед'
