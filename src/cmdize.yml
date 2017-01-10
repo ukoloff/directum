@@ -31,3 +31,10 @@ adduser:
 
 install:
   <<: *gui
+
+gui2:
+  <<: *gui
+
+gui2:debug:
+  <<: *cli
+
