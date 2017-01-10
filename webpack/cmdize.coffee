@@ -32,13 +32,19 @@ me::apply = (compiler)->
           break
 
       fs.writeFile path.format(x), toANSI """
-        #{prolog}#{word bat.command}"%~f0" #{word bat.args}#{target}
+        #{prolog}#{sword bat.command}"%~f0"#{word bat.args}#{word target}
         #{yml[':epilog']}#{do z.source}
 
         """, ->
     return
 
 word = (s)->
+  if s
+    " #{s}"
+  else
+    ''
+
+sword = (s)->
   if s
     "#{s} "
   else
