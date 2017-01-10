@@ -1,0 +1,33 @@
+### Flavours of batch files
+
+# Final argument
+:target:        Directum/Directum
+:target:debug:  Directum2/Directum
+
+:prolog: |
+  0</*! :: See #{homepage}
+  @echo off
+
+:epilog: |
+  goto :EOF */0;
+
+# CLI
+:cli: &cli
+  command: cscript.exe //nologo //e:javascript
+  args:    "%*"
+
+# GUI
+:gui: &gui
+  <<:       *cli
+  command:  start wscript.exe //e:javascript
+
+# Wildcard
+:*:
+  <<: *cli
+
+# Specific commands
+adduser:
+  <<: *gui
+
+install:
+  <<: *gui
