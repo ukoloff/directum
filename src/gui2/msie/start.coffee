@@ -1,10 +1,10 @@
 window.onunload = ->
-  WScript.Echo 'Bye!'
-  WScript.Quit 0
+  echo 'Bye!'
+  exit 0
 
 document.title = 'Превед, медвед!'
 
-WScript.Echo """
+echo """
   WScript from MSIE:
   Я тут!
   """
