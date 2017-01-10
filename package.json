@@ -3,10 +3,6 @@
   "private": true,
   "version": "1.0.0",
   "description": "Various scripts for Directum administering",
-  "targets": {
-    "development": "Directum2/Directum",
-    "production": "Directum/Directum"
-  },
   "pki": "https://ekb.ru/omz/abook/pki/",
   "scripts": {
     "test": "webpack -d --watch",
