@@ -57,3 +57,5 @@ stringify = (rec)->
   ugly: new ugly
     output:
       max_line_len: 80
+    compress:
+      warnings: false
