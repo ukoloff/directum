@@ -16,7 +16,8 @@ me = ->
 me::apply = (compiler)->
   compiler.plugin "done", (compilation)->
     yml = readYML()
-    target = yml[":target#{if compilation.compilation.options.debug then ':debug' else ''}"]
+    debug = compilation.compilation.options.debug
+    target = yml[":target#{if debug then ':debug' else ''}"]
     prolog = yml[':prolog'].replace '#{homepage}', ini.homepage
 
     for k, z of compilation.compilation.assets
@@ -25,7 +26,11 @@ me::apply = (compiler)->
       fs.unlink dst, ->
       x.ext = '.bat'
       delete x.base
-      bat = yml[x.name] or yml[':*']
+
+      for q in dup [x.name, ':*'], debug
+        if bat = yml[q]
+          break
+
       fs.writeFile path.format(x), toANSI """
         #{prolog}#{word bat.command}"%~f0" #{word bat.args}#{target}
         #{yml[':epilog']}#{do z.source}
@@ -49,3 +54,12 @@ readYML = ->
 
 toANSI = (s)->
   iconv.encode s, 'cp1251'
+
+dup = (array, debug)->
+  unless debug
+    return array
+  res = []
+  for s in array
+    res.push "#{s}:debug"
+    res.push s
+  res
