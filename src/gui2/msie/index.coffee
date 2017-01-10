@@ -2,12 +2,11 @@
 Run in browser
 ###
 
-do ->
-  @WScript = document.$
+others.h = document.$
 
 try
   delete document.$
 catch
-  document.$ = 0
+  document.$ = others.x
 
 require './start'

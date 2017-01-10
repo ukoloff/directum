@@ -2,16 +2,14 @@
 Run under WScript
 ###
 
+others.d =
 d = ie().Document
 d.open()
 d.write do require './index.html'
 d.close()
 
+others.w =
 w = d.$
-
-do ->
-  @window = w
-  @document = d
 
 s = fs.OpenTextFile wsh.ScriptFullName, 1
   .ReadAll()

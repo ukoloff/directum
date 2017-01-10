@@ -1,4 +1,5 @@
-#
-# WScript Host Object
-#
-module.exports = WScript ? null
+###
+WScript Host Object
+###
+module.exports =
+  others.h or WScript
