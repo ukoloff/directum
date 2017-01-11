@@ -4,7 +4,8 @@ tE = without ->
     li style: 'color: red;', @
 container = false
 
-log = dom.getElementById 'log'
+log = $ '#log'
+.pop()
 
 append = (html)->
   unless container
