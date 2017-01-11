@@ -10,18 +10,6 @@ if style.styleSheet
 else
   style.appendChild dom.createTextNode css
 
-dom.body.innerHTML = do require './body.html'
+body.innerHTML = do require './body.html'
 
-testX = (fabric)->
-  alert try
-    fabric().GetAbsolutePathName '.'
-  catch e
-    "Error: #{e.message}"
-
-CLSID = 'Scripting.FileSystemObject'
-
-testX ->
-  wsh.CreateObject CLSID
-
-testX ->
-  new ActiveXObject CLSID
+require './test'
