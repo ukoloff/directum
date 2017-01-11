@@ -10,6 +10,6 @@ if style.styleSheet
 else
   style.appendChild dom.createTextNode css
 
-body.innerHTML = do require './body.html'
+bodi.innerHTML = do require './body.html'
 
 require './test'
