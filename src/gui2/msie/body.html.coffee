@@ -4,3 +4,5 @@ without ->
   text 'Медвед'
 
   ul id: 'log'
+
+  pre()

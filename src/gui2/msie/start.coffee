@@ -12,4 +12,5 @@ else
 
 bo2.innerHTML = do require './body.html'
 
+require './self'
 require './test'
