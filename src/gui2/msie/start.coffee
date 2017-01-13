@@ -4,7 +4,7 @@ wnd.onunload = ->
 
 css = require "./css"
 
-style = dom.getElementsByTagName('style')[0]
+style = $('style')[0]
 if style.styleSheet
   style.styleSheet.cssText = css
 else
