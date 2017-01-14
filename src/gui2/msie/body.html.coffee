@@ -1,7 +1,7 @@
 module.exports =
 without ->
   div
-    class: 'header'
+    id: 'head'
     "#{PACKAGE.name}@#{PACKAGE.version}"
   h1 'Превед'
   text 'Медвед'

@@ -4,10 +4,15 @@ body
   padding: 0
   margin-top: 1.5em
 
-.header
+* html body   // IE6 Fixed Position Jitter Fix
+  background-image: url(about:blank)
+  background-attachment: fixed
+
+#head
   position: fixed
   -position: absolute
   top: 0
+  -top: expression(eval(document\.documentElement\.scrollTop))
   left: 0
   width: 100%
   background: yellow
