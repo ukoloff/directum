@@ -2,6 +2,8 @@ webpack = require 'webpack'
 cmdize = require './cmdize'
 ugly = require './ugly'
 
+wrapAt = 72
+
 @entry =
   adduser: "./src/add"
   blockusers: "./src/block"
@@ -30,7 +32,7 @@ values = (map)->
       loader: "coffee?literate"
     styl:
       test: /[.]styl$/
-      loader: 'raw!stylus?compress'
+      loader: "#{require.resolve './raw'}?wrap=#{wrapAt}!stylus?compress"
 
 brk = (s)->
   s.split ' '
@@ -57,6 +59,6 @@ stringify = (rec)->
   globals: new webpack.ProvidePlugin require './autoload'
   ugly: new ugly
     output:
-      max_line_len: 80
+      max_line_len: wrapAt
     compress:
       warnings: false
