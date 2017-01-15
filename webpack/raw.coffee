@@ -6,5 +6,17 @@ parse = require 'querystring'
 
 module.exports = (content)->
   @cacheable?()
-  console.log 'WRAP', Math.max 10, Number(parse(@query.replace /^[?]?/, '').wrap)or 80
+  fragments = split content,
+    Math.max 10, Number(parse(@query.replace /^[?]?/, '').wrap)or 80
+  console.log fragments
   "module.exports = #{JSON.stringify content}"
+
+# Split string at that position(s)
+split =(s, at)->
+  len = s.length
+  i = n = Math.ceil len / at
+  sum = 0
+  stop = 0
+  while i--
+    start = stop
+    s.substring start, stop = Math.round (sum += len)/n
