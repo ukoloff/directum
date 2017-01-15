@@ -38,6 +38,10 @@ brk = (s)->
 @resolve =
   extensions: brk " .js .coffee .litcoffee .coffee.md .styl"
 
+@resolveLoader =
+  alias:
+    raw: require.resolve './raw'
+
 stringify = (rec)->
   res = {}
   for k, v of rec
