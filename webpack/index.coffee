@@ -30,17 +30,13 @@ values = (map)->
       loader: "coffee?literate"
     styl:
       test: /[.]styl$/
-      loader: 'raw!stylus?compress'
+      loader: "#{require.resolve './raw'}?wrap=80!stylus?compress"
 
 brk = (s)->
   s.split ' '
 
 @resolve =
   extensions: brk " .js .coffee .litcoffee .coffee.md .styl"
-
-@resolveLoader =
-  alias:
-    raw: require.resolve './raw'
 
 stringify = (rec)->
   res = {}

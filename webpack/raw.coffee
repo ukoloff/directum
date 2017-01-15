@@ -1,10 +1,10 @@
 ###
 Hand-made raw loader for Webpack
 ###
+parse = require 'querystring'
+  .parse
 
-module.exports = exports = (content)->
+module.exports = (content)->
   @cacheable?()
-  @value = content  # What for?
+  console.log 'WRAP', Math.max 10, Number(parse(@query.replace /^[?]?/, '').wrap)or 80
   "module.exports = #{JSON.stringify content}"
-
-exports.seperable = true;
