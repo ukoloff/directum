@@ -3,8 +3,9 @@ without ->
   div id: 'head', ->
     for z, i in 'One Two Three'.split ' '
       active = 1==i
-      label class: active and 'active', ->
+      label for: ".#{i}", class: active and 'active', ->
         input
+          id: ".#{i}"
           type: 'radio'
           name: 'tab'
           value: i
