@@ -2,14 +2,13 @@ module.exports =
 without ->
   div id: 'head', ->
     for z, i in 'One Two Three'.split ' '
-      active = 1==i
-      label for: ".#{i}", class: active and 'active', ->
+      label for: ".#{i}", ->
         input
           id: ".#{i}"
           type: 'radio'
           name: 'tab'
           value: i
-          checked: active
+          checked: 1==i
         text ' ', z
   h1 'Превед'
   text 'Медвед'
