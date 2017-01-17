@@ -9,5 +9,5 @@ module.exports = without ->
       title "#{PACKAGE.name} v#{PACKAGE.version}"
       style -> raw @
       script "document.$=window"
-    body 'Превед, медвед!'
+    body -> div 'Превед, медвед!'
 
