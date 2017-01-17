@@ -1,5 +1,5 @@
 wnd.onunload = ->
-  echo 'Bye!'
+  echo 'Bye!' if DEBUG
   exit 0
 
 css = require "../css"
@@ -39,9 +39,10 @@ lab.onmouseover = ->
 lab.onmouseout = ->
   popup.className = 'hide'
 
-for a in $ 'a', lab
-  a.onclick = ->
-    popup.className = 'hide'
+for a, i in $ 'a', lab
+  a.onclick = do (i)-> ->
+    rbs[rbs.length - i - 1].click()
+    # popup.className = 'hide'
     false
 
 # require './scroll'
