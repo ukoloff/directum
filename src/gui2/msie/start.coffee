@@ -8,6 +8,7 @@ style = $('style')[0]
 if style.styleSheet
   style.styleSheet.cssText = css
 else
+  style.innerHTML = ''
   style.appendChild dom.createTextNode css
 
 months = ->

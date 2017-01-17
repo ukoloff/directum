@@ -2,12 +2,12 @@
 Run under WScript
 ###
 
-module.exports = without (s)->
+module.exports = without ->
   (tag "!DOCTYPE", true) html: true
   html ->
     head ->
       title "#{PACKAGE.name} v#{PACKAGE.version}"
-      style()
+      style -> raw @
       script "document.$=window"
-    body -> center 'Превед, медвед!'
+    body 'Превед, медвед!'
 
