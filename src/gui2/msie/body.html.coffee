@@ -1,7 +1,7 @@
 module.exports =
 without ->
   div id: 'head', ->
-    label '*', -> div class: 'hide', ->
+    label (-> raw '&hellip;'), -> div class: 'hide', ->
       for tab in @ by -1
         a href: "#", tab
     for tab, i in @
