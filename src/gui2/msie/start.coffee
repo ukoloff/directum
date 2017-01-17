@@ -2,7 +2,7 @@ wnd.onunload = ->
   echo 'Bye!'
   exit 0
 
-css = require "./css"
+css = require "../css"
 
 style = $('style')[0]
 if style.styleSheet
