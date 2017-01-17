@@ -60,5 +60,6 @@ stringify = (rec)->
   ugly: new ugly
     output:
       max_line_len: wrapAt
+      keep_quoted_props: true
     compress:
       warnings: false
