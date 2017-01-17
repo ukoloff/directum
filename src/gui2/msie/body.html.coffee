@@ -1,7 +1,10 @@
 module.exports =
 without ->
   div id: 'head', ->
-    for i in [0..11]
+    label '*', -> div class: 'hide', ->
+      for tab in @ by -1
+        a href: "#", tab
+    for tab, i in @
       label for: ".#{i}", ->
         input
           id: ".#{i}"
@@ -9,7 +12,7 @@ without ->
           name: 'tab'
           value: i
           checked: 1==i
-        text ' ', ('' + new Date 0, i).split(/\s+/)[1]
+        text ' ', tab
   h1 'Превед'
   text 'Медвед'
 

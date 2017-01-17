@@ -10,13 +10,38 @@ if style.styleSheet
 else
   style.appendChild dom.createTextNode css
 
-bo2.innerHTML = do require './body.html'
+months = ->
+  for i in [0..11]
+    ('' + new Date 0, i).split(/\s+/)[1]
+
+bo2.innerHTML = (require './body.html') months()
+
+head = $ '#head'
+  .shift()
+rbs = $ 'input', head
+
 do setTabs = ->
-  for r in $ 'input', $('#head')[0]
+  for r in rbs
     r.onclick = setTabs
     r.parentElement.className = r.checked and 'active' or ''
     r.blur()
-    # r.parentElement.blur()
+
+lab = $ 'label', head
+  .shift()
+
+popup = $ 'div', lab
+  .pop()
+
+lab.onmouseover = ->
+  popup.className = ''
+
+lab.onmouseout = ->
+  popup.className = 'hide'
+
+for a in $ 'a', lab
+  a.onclick = ->
+    popup.className = 'hide'
+    false
 
 # require './scroll'
 require './self'
