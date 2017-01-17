@@ -9,4 +9,5 @@ module.exports = without (s)->
       title "#{PACKAGE.name} v#{PACKAGE.version}"
       style()
       script "document.$=window"
-    body()
+    body -> center 'Превед, медвед!'
+
